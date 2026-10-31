@@ -125,6 +125,75 @@ class RepositoryTests(unittest.TestCase):
             procedure = text.split("---", 2)[2].split("## About this skill")[0]
             self.assertEqual(hashlib.sha256(procedure.encode()).hexdigest(), digest)
 
+    def assert_human_first_skill_table(self, text):
+        """Check the reader-facing catalogue, not its paragraph wording."""
+        tables = re.findall(r"(?:^\|[^\n]*\|[ \t]*(?:\n|$))+", text, re.M)
+        catalogues = [table for table in tables if "skills/" in table]
+        self.assertEqual(len(catalogues), 1, "Expected one skill catalogue")
+        table = catalogues[0]
+        rows = [[cell.strip() for cell in line.strip().strip("|").split("|")]
+                for line in table.splitlines()]
+        self.assertEqual(len(rows), 5, "Expected header, separator and three skills")
+        for row in rows:
+            self.assertEqual(len(row), 2, "Catalogue needs skill then purpose, no licence column")
+        self.assertEqual(rows[0][0], "Skill", "First column must name the skill")
+        self.assertTrue(rows[0][1])
+        for cell in rows[1]:
+            self.assertRegex(cell, r"^:?-{3,}:?$")
+        self.assertNotRegex(table, r"(?i)\blicen[cs]e\b|\bMIT\b|\bCC-BY(?:-4\.0)?\b")
+        names = {
+            "skills/project-prd/SKILL.md": "Project PRD",
+            "skills/business-context-map/SKILL.md": "Business context map",
+            "skills/workflow-or-agent/SKILL.md": "Workflow or agent",
+        }
+        targets = []
+        for first, purpose in rows[2:]:
+            match = re.fullmatch(r"\[([^\]\n]+)\]\((skills/[^\s)]+/SKILL\.md)\)", first)
+            self.assertIsNotNone(match, "First cell must be a linked, human-readable skill name")
+            label, target = match.groups()
+            self.assertIn(target, names)
+            self.assertEqual(label, names[target], "Use the skill name, not a slug or path")
+            targets.append(target)
+            self.assertTrue(purpose, "Second cell must explain the purpose")
+            self.assertNotRegex(purpose, r"skills/[^\s)]+/SKILL\.md")
+        self.assertEqual(sorted(targets), sorted(names), "Each skill must appear exactly once")
+
+    def test_readme_skill_table_is_human_first(self):
+        self.assert_human_first_skill_table((ROOT / "README.md").read_text())
+
+    def test_skill_table_guard_rejects_reader_regressions(self):
+        header = "| Skill | What it helps you do |\n| --- | --- |\n"
+        rows = [
+            "| [Project PRD](skills/project-prd/SKILL.md) | Write a project brief. |\n",
+            "| [Business context map](skills/business-context-map/SKILL.md) | Map business knowledge. |\n",
+            "| [Workflow or agent](skills/workflow-or-agent/SKILL.md) | Plan a process. |\n",
+        ]
+        valid = header + "".join(rows)
+        self.assert_human_first_skill_table(valid)
+        old = ("| Need | Read and apply | Licence |\n| --- | --- | --- |\n"
+               "| Write a brief | [Project PRD](skills/project-prd/SKILL.md) | MIT |\n"
+               "| Map knowledge | [Business context map](skills/business-context-map/SKILL.md) | CC-BY-4.0 |\n"
+               "| Plan a process | [Workflow or agent](skills/workflow-or-agent/SKILL.md) | CC-BY-4.0 |\n")
+        misplaced = header + "".join(
+            f"| {cells[1].strip()} | {cells[0].strip()} |\n"
+            for row in rows for cells in [row.strip().strip("|").split("|")]
+        )
+        invalid = {
+            "old need-first licence table": old,
+            "names in second column": misplaced,
+            "duplicate skill replaces another": header + rows[0] + rows[0] + rows[2],
+            "missing skill": header + "".join(rows[:2]),
+            "extra duplicate row": valid + rows[0],
+            "slug instead of readable name": valid.replace("[Project PRD]", "[project-prd]"),
+            "unlinked name": valid.replace("[Project PRD](skills/project-prd/SKILL.md)", "Project PRD"),
+            "empty purpose": valid.replace("Write a project brief.", ""),
+            "licence ID in purpose": valid.replace("Write a project brief.", "MIT"),
+            "licence instead of purpose column": valid.replace("What it helps you do", "Licence"),
+        }
+        for name, text in invalid.items():
+            with self.subTest(regression=name), self.assertRaises(AssertionError):
+                self.assert_human_first_skill_table(text)
+
     def test_readme_index_and_shared_agent_pointer(self):
         for name in ("README.md", "AGENTS.md", "CLAUDE.md"):
             self.assertTrue((ROOT / name).is_file(), f"Required shared guidance missing: {name}")
@@ -136,11 +205,21 @@ class RepositoryTests(unittest.TestCase):
             self.assertIn(name, agents)
         self.assertIn("[AGENTS.md](AGENTS.md)", claude)
         self.assertLess(len(claude.splitlines()), 12)
-        self.assertIn("Source: https://github.com/pxb/boringBits.", readme)
+        self.assertIn("https://github.com/pxb/boringBits", readme)
         self.assertNotIn("Publication pending", readme)
-        self.assertIn("Native skill discovery, installation and invocation are host-specific and untested here", readme)
         self.assertNotIn("https://borre.ro/newsletter/", readme)
-        self.assertIn("Native plugin adapters are not implemented", readme)
+        for target in ("docs/compatibility.md", "CONTRIBUTING.md", "LICENSE", "THIRD-PARTY-NOTICES.md"):
+            self.assertRegex(readme, rf"\[[^\]\n]+\]\({re.escape(target)}\)")
+        # Require practical read/apply guidance without pinning whole paragraphs.
+        for concept in (r"\b(?:read|load)\b", r"\bresources\b", r"\baccess\b", r"\b(?:text|attachments?)\b"):
+            self.assertRegex(readme.lower(), concept)
+        native_statements = re.findall(r"\bnative\b[^.\n]*", readme.lower())
+        self.assertTrue(any(
+            "install" in statement
+            and re.search(r"\b(?:not available|not implemented|unavailable)\b", statement)
+            and re.search(r"\b(?:untested|not tested|not available or tested)\b", statement)
+            for statement in native_statements
+        ), "Qualify native installation as unavailable and untested; static checks are not host evidence")
         self.assertIn("Brief approval is not execution permission", agents)
 
     def test_mixed_licences_and_notices(self):
