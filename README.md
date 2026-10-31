@@ -20,7 +20,19 @@ For example:
 
 > Read `skills/project-prd/SKILL.md` and its referenced resources in https://github.com/pxb/boringBits. Help me turn my notes into a project brief. Ask me about any important gaps, then give me the brief to review. Do not start building the project.
 
-The skills guide a conversation; they do not install software or connect your systems. Native plugin installation is not available or tested yet. See the [compatibility notes](docs/compatibility.md) for details.
+The skills guide a conversation; they do not install software or connect your systems. See the [compatibility notes](docs/compatibility.md) for details.
+
+## OpenAI marketplace import
+
+This review branch adds a package for OpenAI's repo marketplace importer. In **Add plugin marketplace**, use:
+
+- Source: `https://github.com/pxb/boringBits`
+- Git ref: `feat/openai-marketplace`
+- Sparse paths: leave blank
+
+Choose **Boring Bits** to find all three skills in one package. For example, ask Project PRD to turn your notes into a brief for review, not start building.
+
+The package has passed schema and isolated Codex discovery checks. Native ChatGPT desktop installation is not tested yet; availability depends on the host and account. This is not a public directory listing or a claim of mobile support.
 
 ## Contributing
 

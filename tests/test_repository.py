@@ -2,7 +2,10 @@
 from pathlib import Path
 import ast
 import hashlib
+import json
 import re
+import shutil
+import tempfile
 import unittest
 from urllib.parse import unquote, urlsplit
 
@@ -213,13 +216,11 @@ class RepositoryTests(unittest.TestCase):
         # Require practical read/apply guidance without pinning whole paragraphs.
         for concept in (r"\b(?:read|load)\b", r"\bresources\b", r"\baccess\b", r"\b(?:text|attachments?)\b"):
             self.assertRegex(readme.lower(), concept)
-        native_statements = re.findall(r"\bnative\b[^.\n]*", readme.lower())
-        self.assertTrue(any(
-            "install" in statement
-            and re.search(r"\b(?:not available|not implemented|unavailable)\b", statement)
-            and re.search(r"\b(?:untested|not tested|not available or tested)\b", statement)
-            for statement in native_statements
-        ), "Qualify native installation as unavailable and untested; static checks are not host evidence")
+        self.assertRegex(readme.lower(), r"native[^.\n]*install[^.\n]*not tested")
+        self.assertIn("feat/openai-marketplace", readme)
+        self.assertIn("Sparse paths: leave blank", readme)
+        self.assertNotIn("plugins/codex", readme)
+        self.assertNotRegex(readme, r"Git ref:.*`main`")
         self.assertIn("Brief approval is not execution permission", agents)
 
     def test_mixed_licences_and_notices(self):
@@ -266,6 +267,7 @@ class RepositoryTests(unittest.TestCase):
             ".gitignore", "README.md", "AGENTS.md", "CLAUDE.md", "LICENSE",
             "THIRD-PARTY-NOTICES.md", "CONTRIBUTING.md", "docs/compatibility.md",
             "requirements-test.txt", "tests/test_repository.py",
+            "plugin.json", ".agents/plugins/marketplace.json",
             "skills/project-prd/SKILL.md", "skills/project-prd/PRD-TEMPLATE.md",
             "skills/project-prd/THIRD-PARTY-NOTICES.md", "skills/project-prd/SOURCE-REUSE.md",
             "skills/business-context-map/SKILL.md", "skills/workflow-or-agent/SKILL.md",
@@ -301,6 +303,164 @@ class RepositoryTests(unittest.TestCase):
             text = p.read_text()
             for pattern in patterns:
                 self.assertIsNone(re.search(pattern, text), f"{p.relative_to(ROOT)}: forbidden pattern")
+
+    def assert_delivery(self, root):
+        """Chosen skills-only contract, not an official marketplace JSON Schema.
+
+        The official portable schema is validated separately, without network
+        access or a vendored copy in this suite. These stricter repository gates
+        also cover OpenAI metadata, local-source semantics and resource closure.
+        """
+        manifest_path = root / "plugin.json"
+        self.assertTrue(manifest_path.is_file(), "Missing root portable manifest")
+        manifest = json.loads(manifest_path.read_text())
+        self.assertEqual(set(manifest), {
+            "$schema", "name", "version", "description", "author",
+            "homepage", "repository", "extensions",
+        })
+        self.assertEqual(manifest["$schema"], "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
+        self.assertEqual(manifest["name"], "boring-bits")
+        self.assertEqual(manifest["version"], "0.1.0")
+        self.assertIsInstance(manifest["description"], str)
+        self.assertTrue(manifest["description"].strip())
+        self.assertEqual(manifest["author"], {"name": "Pedro Borrero", "url": "https://borre.ro"})
+        self.assertEqual(manifest["homepage"], "https://borre.ro")
+        self.assertEqual(manifest["repository"], "https://github.com/pxb/boringBits")
+        self.assertEqual(set(manifest["extensions"]), {"com.openai"})
+        overlay = manifest["extensions"]["com.openai"]
+        self.assertEqual(set(overlay), {"interface"})
+        interface = overlay["interface"]
+        self.assertEqual(set(interface), {
+            "displayName", "shortDescription", "developerName", "category", "websiteURL",
+        })
+        self.assertEqual(interface["displayName"], "Boring Bits")
+        self.assertEqual(interface["developerName"], "Pedro Borrero")
+        self.assertEqual(interface["category"], "Productivity")
+        self.assertEqual(interface["websiteURL"], "https://borre.ro")
+        self.assertIsInstance(interface["shortDescription"], str)
+        self.assertTrue(interface["shortDescription"].strip())
+
+        catalogue_path = root / ".agents/plugins/marketplace.json"
+        self.assertTrue(catalogue_path.is_file(), "Missing marketplace manifest")
+        catalogue = json.loads(catalogue_path.read_text())
+        self.assertEqual(set(catalogue), {"name", "interface", "plugins"})
+        self.assertEqual(catalogue["name"], "boring-bits")
+        self.assertEqual(catalogue["interface"], {"displayName": "Boring Bits"})
+        self.assertEqual(len(catalogue["plugins"]), 1)
+        entry = catalogue["plugins"][0]
+        self.assertEqual(set(entry), {"name", "source", "policy", "category"})
+        self.assertEqual(entry["name"], manifest["name"])
+        self.assertEqual(entry["policy"], {"installation": "AVAILABLE", "authentication": "ON_INSTALL"})
+        self.assertEqual(entry["category"], "Productivity")
+        source = entry["source"]
+        self.assertEqual(set(source), {"source", "path"})
+        self.assertEqual(source["source"], "local")
+        self.assertTrue(source["path"].startswith("./"))
+        selected = (root / source["path"]).resolve()
+        self.assertTrue(selected.is_relative_to(root.resolve()), "Source escapes marketplace root")
+        self.assertEqual(selected, root.resolve(), "Package must select canonical repository root")
+        self.assertEqual(source["path"], "./")
+
+        found = {p.parent.name for p in selected.glob("skills/*/SKILL.md")}
+        self.assertEqual(found, SKILLS, "Root discovery must find all three skills")
+        self.assertEqual(len(list(selected.rglob("SKILL.md"))), 3, "No copied skill bodies")
+        required = {
+            "plugin.json", ".agents/plugins/marketplace.json", "LICENSE", "THIRD-PARTY-NOTICES.md",
+            "skills/project-prd/PRD-TEMPLATE.md", "skills/project-prd/SOURCE-REUSE.md",
+            "skills/project-prd/THIRD-PARTY-NOTICES.md",
+        } | {f"skills/{name}/SKILL.md" for name in SKILLS}
+        for relative in sorted(required):
+            resource = selected / relative
+            self.assertTrue(resource.is_file(), f"Missing packaged resource: {relative}")
+        for path in selected.rglob("*"):
+            if ".git" not in path.relative_to(selected).parts:
+                self.assertFalse(path.is_symlink(), "No symlink escape or duplicate alias")
+        forbidden = {"mcp.json", ".mcp.json", ".app.json", ".codex", ".codex-plugin", "hooks", "scripts"}
+        self.assertFalse(forbidden & {p.name for p in selected.iterdir()}, "No runtime/config side effects")
+        return required
+
+    def test_openai_root_package_discovery(self):
+        self.assert_delivery(ROOT)
+
+    def test_openai_delivery_rejects_manifest_and_catalogue_regressions(self):
+        changes = [
+            ("plugin.json", lambda d: d.update(name="Boring Bits")),
+            ("plugin.json", lambda d: d.update({"$schema": "https://example.com/wrong-schema"})),
+            ("plugin.json", lambda d: d.update(license="MIT")),
+            ("plugin.json", lambda d: d.update(skills="./skills/")),
+            ("plugin.json", lambda d: d["extensions"]["com.openai"].update(hooks="./hooks/hooks.json")),
+            ("plugin.json", lambda d: d["extensions"]["com.openai"].update(apps="./.app.json")),
+            ("plugin.json", lambda d: d["extensions"]["com.openai"]["interface"].update(capabilities=["Write"])),
+            (".agents/plugins/marketplace.json", lambda d: d.update(name="wrong-marketplace")),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0].update(name="wrong-plugin")),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"].clear()),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"].append(d["plugins"][0].copy())),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0].update(policy={})),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0]["policy"].update(installation="INSTALLED_BY_DEFAULT")),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0]["source"].update(path="./../outside")),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0]["source"].update(path="/etc")),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0]["source"].update(path="./.agents/plugins")),
+            (".agents/plugins/marketplace.json", lambda d: d["plugins"][0]["source"].update(source="url")),
+        ]
+        with tempfile.TemporaryDirectory(prefix="boring-bits-contract-") as tmp:
+            for index, (relative, change) in enumerate(changes):
+                with self.subTest(case=index, file=relative):
+                    fixture = Path(tmp) / str(index)
+                    shutil.copytree(ROOT, fixture, ignore=shutil.ignore_patterns(".git"))
+                    path = fixture / relative
+                    data = json.loads(path.read_text())
+                    change(data)
+                    path.write_text(json.dumps(data))
+                    with self.assertRaises(AssertionError):
+                        self.assert_delivery(fixture)
+
+    def test_openai_delivery_rejects_missing_resources_and_sparse_selection(self):
+        required = self.assert_delivery(ROOT)
+        with tempfile.TemporaryDirectory(prefix="boring-bits-resources-") as tmp:
+            for index, relative in enumerate(sorted(required)):
+                with self.subTest(missing=relative):
+                    fixture = Path(tmp) / str(index)
+                    # Build an incomplete checkout, rather than mutating real files.
+                    for path in ROOT.rglob("*"):
+                        rel = path.relative_to(ROOT)
+                        if path.is_file() and ".git" not in rel.parts and rel.as_posix() != relative:
+                            dest = fixture / rel
+                            dest.parent.mkdir(parents=True, exist_ok=True)
+                            dest.write_bytes(path.read_bytes())
+                    with self.assertRaises(AssertionError):
+                        self.assert_delivery(fixture)
+            sparse = Path(tmp) / "sparse"
+            sparse.mkdir()
+            # Selecting only a plugin subdirectory cannot deliver this root package.
+            with self.assertRaisesRegex(AssertionError, "Missing root portable manifest"):
+                self.assert_delivery(sparse)
+
+    def test_openai_delivery_rejects_duplicate_symlink_and_runtime_payloads(self):
+        additions = {
+            "copied/skills/project-prd/SKILL.md": "Copied skill body",
+            "mcp.json": '{"mcpServers": {}}',
+            ".mcp.json": '{"mcpServers": {}}',
+            ".app.json": '{"apps": {}}',
+            "hooks/hooks.json": "{}",
+            ".codex/config.toml": "[plugins]\n",
+            ".codex-plugin/plugin.json": "{}",
+            "scripts/install.sh": "exit 0\n",
+        }
+        with tempfile.TemporaryDirectory(prefix="boring-bits-boundary-") as tmp:
+            for index, (relative, text) in enumerate(additions.items()):
+                with self.subTest(addition=relative):
+                    fixture = Path(tmp) / str(index)
+                    shutil.copytree(ROOT, fixture, ignore=shutil.ignore_patterns(".git"))
+                    added = fixture / relative
+                    added.parent.mkdir(parents=True, exist_ok=True)
+                    added.write_text(text)
+                    with self.assertRaises(AssertionError):
+                        self.assert_delivery(fixture)
+            fixture = Path(tmp) / "symlink"
+            shutil.copytree(ROOT, fixture, ignore=shutil.ignore_patterns(".git"))
+            (fixture / "alias").symlink_to(ROOT / "skills", target_is_directory=True)
+            with self.assertRaises(AssertionError):
+                self.assert_delivery(fixture)
 
     def test_test_script_syntax(self):
         ast.parse((ROOT / "tests/test_repository.py").read_text())

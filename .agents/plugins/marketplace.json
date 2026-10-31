@@ -1,0 +1,20 @@
+{
+  "name": "boring-bits",
+  "interface": {
+    "displayName": "Boring Bits"
+  },
+  "plugins": [
+    {
+      "name": "boring-bits",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

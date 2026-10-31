@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "boring-bits",
+  "version": "0.1.0",
+  "description": "Practical skills for project briefs, business context and workflow planning.",
+  "author": {
+    "name": "Pedro Borrero",
+    "url": "https://borre.ro"
+  },
+  "homepage": "https://borre.ro",
+  "repository": "https://github.com/pxb/boringBits",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Boring Bits",
+        "shortDescription": "Project briefs, business context and workflow planning",
+        "developerName": "Pedro Borrero",
+        "category": "Productivity",
+        "websiteURL": "https://borre.ro"
+      }
+    }
+  }
+}
