@@ -1,0 +1,2 @@
+# Validation dependency only; skills themselves require no Python runtime.
+PyYAML==6.0.3
