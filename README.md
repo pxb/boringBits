@@ -4,7 +4,7 @@ Practical ways to make AI useful in a business: reusable skills, playbooks, patt
 
 By Pedro Borrero, [borre.ro](https://borre.ro).
 
-**Publication pending.** Prepared locally for review; intended public home: https://github.com/pxb/boring-bits. No remote publication or release is implied by this checkout.
+Source: https://github.com/pxb/boringBits. Native plugin adapters are not implemented; see [compatibility notes](docs/compatibility.md).
 
 ## Start here
 
