@@ -32,7 +32,9 @@ This review branch adds a package for OpenAI's repo marketplace importer. In **A
 
 Choose **Boring Bits** to find all three skills in one package. For example, ask Project PRD to turn your notes into a brief for review, not start building.
 
-The package has passed schema and isolated Codex discovery checks. Native ChatGPT desktop installation is not tested yet; availability depends on the host and account. This is not a public directory listing or a claim of mobile support.
+The package has passed schema and isolated Codex discovery checks. ChatGPT desktop installation was user-reported on 31 October 2026. Screenshot-reviewed first invocation showed **Boring Bits > Project PRD**, its template and the first interview question. This was not independently reproduced; a full real-project pilot remains untested.
+
+iPhone-only native installation through this GitHub marketplace route is not established. Desktop installation does not establish mobile availability or account-wide sync. This is not a public directory listing; see the [compatibility notes](docs/compatibility.md) for evidence and limits.
 
 ## Contributing
 

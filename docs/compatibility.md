@@ -5,7 +5,7 @@
 | Mode | What it means | Current evidence |
 | --- | --- | --- |
 | Explicit read/apply | Give an assistant repository/file access, ask it to read a selected skill and its resources, then use those instructions for your task | Portable Markdown and local structural validation only; no claim that every model follows every instruction reliably |
-| Host-native discovery/install | A host discovers packaged skills, exposes them for selection and invokes them according to its own contract | OpenAI marketplace/package manifests provided; portable schema and isolated Codex catalogue discovery checked. ChatGPT desktop installation and live skill invocation not tested |
+| Host-native discovery/install | A host discovers packaged skills, exposes them for selection and invokes them according to its own contract | Portable schema and isolated Codex catalogue discovery checked. ChatGPT desktop installation user-reported; first Project PRD invocation screenshot-reviewed. Full real-project behaviour not yet tested |
 
 The canonical skill folders follow the [Agent Skills specification](https://agentskills.io/specification): YAML frontmatter with `name` and `description`, Markdown instructions and optional resources. [AGENTS.md](https://agents.md/) is a separate open convention for repository navigation and contribution guidance, not a plugin manifest. A plain CLAUDE.md pointer is intended to direct readers to the shared guidance, not invoke undocumented import syntax.
 
@@ -43,4 +43,12 @@ Separately, the portable manifest was validated against the official draft-2020-
 
 The link check supports the simple inline links and backtick file references used here. It is not a full Markdown parser, link availability checker or exhaustive secret detector. It deliberately does not fetch article URLs. Human review remains required before publication.
 
-No CI run, ChatGPT desktop installation, live agent session or mobile compatibility pilot is established by these checks. No real user plugin was installed, enabled or registered; disposable CLI catalogue configuration was confined to an isolated test home.
+Those automated checks do not establish CI results, desktop installation, live model behaviour or mobile compatibility. The earlier Codex validation did not install, enable or register a real user plugin; its disposable catalogue configuration was confined to an isolated test home.
+
+## Desktop smoke test and mobile limits
+
+ChatGPT desktop installation was user-reported on 31 October 2026. Screenshot review of the first invocation showed **Boring Bits > Project PRD** selected, its template in use and the first interview question. This is a limited desktop smoke test, not an independently reproduced installation or a full real-project behavioural pilot.
+
+A full project pilot, handling corrections, pause/resume, material approvals, the final PRD and a fresh-agent handoff remain unproved and deferred. The canonical skill content is complete; this checkpoint changes documentation only. Wider skill candidates, native iOS delivery, newsletter work and a delivery breakdown remain parked without a timeline.
+
+iPhone-only native installation through this GitHub marketplace route is not established. The desktop smoke test does not establish mobile installation, mobile invocation or account-wide sync. These limits concern this route and the evidence available, not all iOS plugin capabilities.

@@ -216,7 +216,13 @@ class RepositoryTests(unittest.TestCase):
         # Require practical read/apply guidance without pinning whole paragraphs.
         for concept in (r"\b(?:read|load)\b", r"\bresources\b", r"\baccess\b", r"\b(?:text|attachments?)\b"):
             self.assertRegex(readme.lower(), concept)
-        self.assertRegex(readme.lower(), r"native[^.\n]*install[^.\n]*not tested")
+        # Distinguish the reported desktop smoke test from unproved behaviour/mobile support.
+        self.assertRegex(readme.lower(), r"desktop installation[^.\n]*user-reported")
+        self.assertRegex(readme.lower(), r"screenshot-reviewed first invocation[^.\n]*project prd")
+        self.assertIn("not independently reproduced", readme.lower())
+        self.assertRegex(readme.lower(), r"full real-project pilot[^.\n]*untested")
+        self.assertRegex(readme.lower(), r"iphone-only native installation[^.\n]*github marketplace route[^.\n]*not established")
+        self.assertRegex(readme.lower(), r"desktop installation does not establish[^.\n]*mobile[^.\n]*account-wide sync")
         self.assertIn("feat/openai-marketplace", readme)
         self.assertIn("Sparse paths: leave blank", readme)
         self.assertNotIn("plugins/codex", readme)
