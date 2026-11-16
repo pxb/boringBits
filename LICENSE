@@ -26,6 +26,11 @@ Scope
 4. No licence is granted here over private business facts, third-party
    documents or other material a user supplies while applying a skill.
    Future contributions must state their licensing scope explicitly.
+5. skills/enquiry, skills/market-position and skills/meeting-prep are original
+   work available under MIT below. They adapt no third-party material.
+6. docs/business-system and tools/skill_map.py are original documentation and
+   code available under MIT below. The design they describe is not a claim that
+   the unbuilt functions exist.
 
 MIT License
 -----------

@@ -2,6 +2,7 @@
 from pathlib import Path
 import ast
 import hashlib
+import importlib.util
 import re
 import unittest
 from urllib.parse import unquote, urlsplit
@@ -23,7 +24,8 @@ def frontmatter(text):
     return data
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS = {"project-prd", "business-context-map", "workflow-or-agent"}
+BUSINESS_SYSTEM = {"enquiry", "market-position", "meeting-prep"}
+SKILLS = {"project-prd", "business-context-map", "workflow-or-agent"} | BUSINESS_SYSTEM
 
 
 class RepositoryTests(unittest.TestCase):
@@ -133,7 +135,7 @@ class RepositoryTests(unittest.TestCase):
         table = catalogues[0]
         rows = [[cell.strip() for cell in line.strip().strip("|").split("|")]
                 for line in table.splitlines()]
-        self.assertEqual(len(rows), 5, "Expected header, separator and three skills")
+        self.assertEqual(len(rows), 2 + len(SKILLS), "Expected header, separator and one row per skill")
         for row in rows:
             self.assertEqual(len(row), 2, "Catalogue needs skill then purpose, no licence column")
         self.assertEqual(rows[0][0], "Skill", "First column must name the skill")
@@ -145,6 +147,9 @@ class RepositoryTests(unittest.TestCase):
             "skills/project-prd/SKILL.md": "Project PRD",
             "skills/business-context-map/SKILL.md": "Business context map",
             "skills/workflow-or-agent/SKILL.md": "Workflow or agent",
+            "skills/enquiry/SKILL.md": "Enquiry",
+            "skills/market-position/SKILL.md": "Market position",
+            "skills/meeting-prep/SKILL.md": "Meeting prep",
         }
         targets = []
         for first, purpose in rows[2:]:
@@ -167,6 +172,9 @@ class RepositoryTests(unittest.TestCase):
             "| [Project PRD](skills/project-prd/SKILL.md) | Write a project brief. |\n",
             "| [Business context map](skills/business-context-map/SKILL.md) | Map business knowledge. |\n",
             "| [Workflow or agent](skills/workflow-or-agent/SKILL.md) | Plan a process. |\n",
+            "| [Enquiry](skills/enquiry/SKILL.md) | Decide what happens to an inbound message. |\n",
+            "| [Market position](skills/market-position/SKILL.md) | Decide who the business is for. |\n",
+            "| [Meeting prep](skills/meeting-prep/SKILL.md) | Brief a call before it starts. |\n",
         ]
         valid = header + "".join(rows)
         self.assert_human_first_skill_table(valid)
@@ -269,6 +277,14 @@ class RepositoryTests(unittest.TestCase):
             "skills/project-prd/SKILL.md", "skills/project-prd/PRD-TEMPLATE.md",
             "skills/project-prd/THIRD-PARTY-NOTICES.md", "skills/project-prd/SOURCE-REUSE.md",
             "skills/business-context-map/SKILL.md", "skills/workflow-or-agent/SKILL.md",
+            "skills/enquiry/SKILL.md", "skills/market-position/SKILL.md", "skills/meeting-prep/SKILL.md",
+            "tools/skill_map.py",
+            "docs/business-system/README.md", "docs/business-system/01-business-breakdown.md",
+            "docs/business-system/02-skill-map.md", "docs/business-system/03-decisions.md",
+            "docs/business-system/04-open-questions.md", "docs/business-system/05-review-brief.md",
+            "docs/business-system/06-conventions.md",
+            "docs/business-system/templates/prd.md", "docs/business-system/templates/architecture.md",
+            "docs/business-system/templates/design-system.md",
         }
         files = {p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*") if p.is_file() and ".git" not in p.relative_to(ROOT).parts}
         self.assertEqual(files, expected)
@@ -305,10 +321,20 @@ class RepositoryTests(unittest.TestCase):
     def test_test_script_syntax(self):
         ast.parse((ROOT / "tests/test_repository.py").read_text())
 
-    def test_exactly_three_canonical_skills(self):
+    def test_all_canonical_skills_are_indexed(self):
         found = {p.parent.name for p in ROOT.glob("skills/*/SKILL.md")}
         self.assertEqual(found, SKILLS)
-        self.assertEqual(len(list(ROOT.rglob("SKILL.md"))), 3)
+        self.assertEqual(len(list(ROOT.rglob("SKILL.md"))), len(SKILLS))
+
+    def test_business_system_routing_rule_holds(self):
+        spec = importlib.util.spec_from_file_location("skill_map", ROOT / "tools/skill_map.py")
+        if spec is None or spec.loader is None:
+            self.fail("tools/skill_map.py could not be loaded")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.assertEqual(module.audit(), [], "Shared trigger event, orphan role or orphan skill")
+        self.assertLessEqual(BUSINESS_SYSTEM, {row[2] for row in module.S})
+        self.assertEqual(len({row[2] for row in module.S}), len(module.S), "Duplicate skill name in the map")
 
 
 if __name__ == "__main__":

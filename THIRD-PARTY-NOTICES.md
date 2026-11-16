@@ -32,3 +32,12 @@ The skills are distributed independently of article publication. No full article
 The separation of canonical skills from host-specific integration follows a general architectural pattern. [obra/superpowers porting guidance at revision 2ce8aa15d05bd57213e6f746f953aafb7ded7a8b](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/docs/porting-to-a-new-harness.md) was consulted for that distinction. No installer, hook, bootstrap, persona, tool mapping or policy text was copied into this toolkit. This architectural consultation is separate from the actual PRD adaptations, whose MIT notices are retained above. No AGPL benchmark material was copied or adapted.
 
 Format references: [Agent Skills specification](https://agentskills.io/specification) for skill frontmatter and resources; [AGENTS.md](https://agents.md/) for open repository guidance. Neither makes the whole repository layout a universal native installation schema.
+
+
+## Original work: business system skills
+
+skills/enquiry, skills/market-position and skills/meeting-prep, together with
+docs/business-system and tools/skill_map.py, are original work by Pedro Borrero
+and contain no third-party material. No upstream licence applies to them. The
+naming, structure and routing rule were developed for this toolkit; the general
+idea of role-based business functions is common practice, not adapted text.
