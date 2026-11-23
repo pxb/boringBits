@@ -31,4 +31,8 @@ The skills are distributed independently of article publication. No full article
 
 The separation of canonical skills from host-specific integration follows a general architectural pattern. [obra/superpowers porting guidance at revision 2ce8aa15d05bd57213e6f746f953aafb7ded7a8b](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/docs/porting-to-a-new-harness.md) was consulted for that distinction. No installer, hook, bootstrap, persona, tool mapping or policy text was copied into this toolkit. This architectural consultation is separate from the actual PRD adaptations, whose MIT notices are retained above. No AGPL benchmark material was copied or adapted.
 
+## Consulted, not adapted: the BusinessBits skills
+
+The BusinessBits skills (Business setup, Enquiry, Prospecting, Proposal, Pipeline) and the shared record definitions are original text by Pedro Borrero, borre.ro, under MIT. Anthropic's small-business plugin in [anthropics/knowledge-work-plugins at revision 0c35ee357e67e634c5f63940294f05ad97225725](https://github.com/anthropics/knowledge-work-plugins/tree/0c35ee357e67e634c5f63940294f05ad97225725/small-business) (Apache-2.0) was consulted for general patterns: an onboarding step that writes a business profile, one record of truth for customers, and drafts staged for the owner's approval. No text or files were copied from it. Credit to Anthropic for the patterns.
+
 Format references: [Agent Skills specification](https://agentskills.io/specification) for skill frontmatter and resources; [AGENTS.md](https://agents.md/) for open repository guidance. Neither makes the whole repository layout a universal native installation schema.

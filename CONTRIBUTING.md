@@ -5,7 +5,7 @@ Keep contributions practical and independently useful: a skill, playbook, patter
 ## Change discipline
 
 1. Use a named branch and define the intended behaviour before changing it.
-2. Keep one canonical skill body under `skills/`. Keep referenced resources beside it and preserve relative links. Names describe the work rather than a vendor command.
+2. Keep one canonical skill body: general skills under `skills/`, BusinessBits skills under `businessbits/<area>/<role>/`. Keep referenced resources beside it and preserve relative links. Names describe the work rather than a vendor command.
 3. Preserve attribution and licence scope. Do not apply MIT to CC-BY-4.0 companions. Retain the complete PRD source map and notices; changes to approved PRD interview/template behaviour need explicit review.
 4. Do not include credentials, real client identifiers, private operational exports, website assets, historical workspace artifacts, binary/font files or skill ZIPs. Use synthetic examples labelled as such, not invented case studies presented as evidence.
 5. Do not add installers, hooks, telemetry, permission bypasses, global configuration or a native adapter without a separate approved, testable requirement.

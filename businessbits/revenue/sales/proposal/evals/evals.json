@@ -1,0 +1,171 @@
+{
+  "skill_name": "proposal",
+  "note": "Synthetic cases built from real pricing and scope decisions. Firms and people are invented. Each assumes a profile with an 850 GBP day rate, a 700 GBP floor, 3 client days a week, and builds paid half on signing and half on acceptance.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A friend who runs an events business asked me to 'knock up a small booking site'. We started last week without talking money. He's now asking for a gallery and a promo video page too. Write up where we are.",
+      "expected_output": "Raises budget and price now, before more work, and treats the gallery and video page as priced extras rather than absorbing them.",
+      "expectations": [
+        "Says price and budget should be agreed now, not at the end",
+        "Treats the gallery and video page as optional priced extras",
+        "Does not send anything to the friend without the user's approval"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Mid-build on a signed workflow project (two connected systems: their CRM and inbox), the client asks us to also write results into their accounting system. They say it's 'just one more connection'.",
+      "expected_output": "Classifies it as a change because it adds a connected system, drafts a change note with price and effect on timeline and acceptance, and says work waits for written approval.",
+      "expectations": [
+        "Classifies the request as out of scope",
+        "Drafts a change note with price and timeline effect",
+        "States that work starts only after written approval",
+        "Does not quietly absorb the work"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The client signed our 4,000 GBP proposal within ten minutes of receiving it, no questions. Great, right?",
+      "expected_output": "Celebrates the win, records it, and notes that an instant unnegotiated yes suggests the price was too low, so the next quote should go up.",
+      "expectations": [
+        "Records the proposal as accepted",
+        "Says an instant yes suggests the price was low",
+        "Recommends raising the next comparable quote"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Write a proposal for a 15-day build starting next month. We have 4 free client days next month and 10 the month after.",
+      "expected_output": "Flags that 15 days doesn't fit next month and offers a later start or a first phase that fits.",
+      "expectations": [
+        "Compares the 15 days against free capacity",
+        "Says it does not fit next month",
+        "Offers a later start or a smaller first phase"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Quote 3,000 GBP fixed for this. I estimate about 5 days of work.",
+      "expected_output": "Works out the effective day rate of 600 GBP, says it is below the 700 GBP floor, and suggests changing scope or price.",
+      "expectations": [
+        "Calculates an effective day rate of 600 GBP",
+        "Says it is below the 700 GBP floor",
+        "Suggests changing scope or price, not the estimate"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Two weeks after go-live the client says the workflow stopped working because they renamed fields in their CRM. They want it fixed free under the defect period.",
+      "expected_output": "Explains that a failure caused by a change in the client's own systems is a change, not a defect, and drafts a change note.",
+      "expectations": [
+        "Classifies it as a change caused by the client's systems",
+        "Does not treat it as a free defect fix",
+        "Drafts a change note for the user to approve"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Kestrel Homes already pays a lead-generation agency about 5,000 GBP a month. Their sales director asked on the call why they'd pay us as well. How should the proposal handle that?",
+      "expected_output": "Treats the existing spend as proof of the need, not an objection, and positions the work as complementing the agency: the gaps around it such as follow-up, people's time and repeated manual steps. Does not pitch replacing the agency.",
+      "expectations": [
+        "Says the existing spend shows the need is real",
+        "Does not frame the agency as a competitor to replace",
+        "Proposes work that fills gaps around the existing provision",
+        "Invents none of Kestrel's figures beyond what was given"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "A friend runs a small events business and wants us to start building their booking site this week. They said we can sort the price out later. Shall I just start?",
+      "expected_output": "Says to scope it and send a proposal with a price before any work starts, even for a friend, and offers to draft it. A friends and family discount, if any, is named against the full price.",
+      "expectations": [
+        "Advises against starting before a proposal is agreed",
+        "Offers to scope and draft the proposal",
+        "If a discount is used, names it and shows the full price",
+        "Starts no work and sends nothing"
+      ]
+    }
+  ],
+  "trigger_queries": [
+    {
+      "query": "write a proposal for this client",
+      "should_trigger": true
+    },
+    {
+      "query": "how much should I charge for a three-week build",
+      "should_trigger": true
+    },
+    {
+      "query": "draft a statement of work",
+      "should_trigger": true
+    },
+    {
+      "query": "the client wants an extra feature mid-project, is that included?",
+      "should_trigger": true
+    },
+    {
+      "query": "should I quote a day rate or a fixed price",
+      "should_trigger": true
+    },
+    {
+      "query": "write a change note for the new integration they asked for",
+      "should_trigger": true
+    },
+    {
+      "query": "they asked for a quote after our call, put it together",
+      "should_trigger": true
+    },
+    {
+      "query": "is this bug a free fix or a change request",
+      "should_trigger": true
+    },
+    {
+      "query": "can I offer a discount to win my first case study",
+      "should_trigger": true
+    },
+    {
+      "query": "price the retainer for ongoing support",
+      "should_trigger": true
+    },
+    {
+      "query": "reply to the enquiry that came in this morning",
+      "should_trigger": false
+    },
+    {
+      "query": "find new companies to contact",
+      "should_trigger": false
+    },
+    {
+      "query": "which proposals are still waiting for an answer",
+      "should_trigger": false
+    },
+    {
+      "query": "update my day rate in the profile",
+      "should_trigger": false
+    },
+    {
+      "query": "write a grant proposal for my charity",
+      "should_trigger": false
+    },
+    {
+      "query": "write a wedding speech",
+      "should_trigger": false
+    },
+    {
+      "query": "create an invoice for last month's work",
+      "should_trigger": false
+    },
+    {
+      "query": "review this supplier's quote for my office move",
+      "should_trigger": false
+    },
+    {
+      "query": "write a PRD for the client's app",
+      "should_trigger": false
+    },
+    {
+      "query": "draft my terms and conditions for the website",
+      "should_trigger": false
+    }
+  ]
+}

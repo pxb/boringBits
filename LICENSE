@@ -23,7 +23,14 @@ Scope
    Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
    Retain attribution and the licence reference, and indicate changes.
    See THIRD-PARTY-NOTICES.md for the changes made in this distribution.
-4. No licence is granted here over private business facts, third-party
+4. The BusinessBits skills businessbits/setup/business-setup,
+   businessbits/revenue/sales/enquiry, businessbits/revenue/sales/prospecting,
+   businessbits/revenue/sales/proposal and businessbits/revenue/sales/pipeline,
+   and the shared record definitions in businessbits/RECORDS.md, and the
+   businessbits/README.md overview, are original work by Pedro
+   Borrero, borre.ro, available under the MIT License below. No third-party
+   text is copied into them; see THIRD-PARTY-NOTICES.md.
+5. No licence is granted here over private business facts, third-party
    documents or other material a user supplies while applying a skill.
    Future contributions must state their licensing scope explicitly.
 

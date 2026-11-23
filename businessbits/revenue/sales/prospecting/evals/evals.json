@@ -1,0 +1,160 @@
+{
+  "skill_name": "prospecting",
+  "note": "Synthetic cases built from real research decisions. Firms and people are invented.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Research Kestrel Malting Ltd for this week's pack. The register shows its parent company is Corvid Grain Holdings plc. Corvid Grain is already one of our clients.",
+      "expected_output": "Suppresses the account because its parent is a client, and does not research or draft for it.",
+      "expectations": [
+        "Identifies that the parent company is a current client",
+        "Suppresses Kestrel Malting rather than adding it to the pack",
+        "Does not draft outreach for it"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "For Wren Logistics Ltd the email verifier says james.hale@wrenlogistics.co.uk is valid. The register shows James Hale resigned as a director four months ago. Is he ready to contact?",
+      "expected_output": "Says no: deliverable is not current. Labels him verify-before-sending or replaces him with a current officer or team-page contact.",
+      "expectations": [
+        "Says a valid mailbox does not prove he is still in the role",
+        "Does not label the contact deliverable-and-current",
+        "Proposes finding a current named person from the register or team page"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm researching Osprey Freight Ltd. ospreyfreight.co.uk doesn't resolve. Their trucks and LinkedIn say 'Osprey Group'. Carry on with the contact search.",
+      "expected_output": "Stops to find the real trading and email domain (likely the group's) and checks it against the register before searching for contacts.",
+      "expectations": [
+        "Does not run the contact search on the non-resolving domain",
+        "Looks for the trading domain under the group name",
+        "Checks the domain against the company register before using it"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "For Plover Foods Ltd the only contact I can find is info@ploverfoods.co.uk and a switchboard number. Add them to the pack.",
+      "expected_output": "Refuses to add the account without a named person and suggests dropping it for another.",
+      "expectations": [
+        "States that a generic inbox is not a contact",
+        "Does not add Plover Foods to the pack as ready",
+        "Suggests dropping it or finding a named person first"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write touch 1 for Heron Dental Supplies. Our internal angle: 'small owner-run firm, probably drowning in quote admin, easy first workflow win'. Their signal: they advertised for a sales coordinator on 3 November.",
+      "expected_output": "Writes a short opener using the hiring signal and one question about the cost of the problem, with none of the internal angle wording.",
+      "expectations": [
+        "Uses the dated hiring signal in the opener",
+        "Does not include the internal angle or phrases like 'drowning' or 'easy win'",
+        "Has exactly one call to action",
+        "Is marked as a draft for the user to send"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Add Marie Lund, who trades as a sole trader bookkeeper, to the email sequence. We found her on her website. She's never been a customer.",
+      "expected_output": "Says marketing email to a sole trader needs consent or a soft opt-in, which isn't present, so email is not allowed. Suggests another route or leaving her out.",
+      "expectations": [
+        "Identifies her as an individual subscriber under PECR",
+        "Does not draft a marketing email to her",
+        "Sets basis to none or explains which channel is allowed"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "How many companies should I research each week? I want 3 new clients a quarter from outbound and I'm guessing 3% of outbound prospects convert. I'm using one signal, job adverts.",
+      "expected_output": "Works back from the run rate: 3 clients at an assumed 3% needs 100 prospects a quarter, about 8 a week, above the floor of 5 a week per signal. Labels 3% as an assumption and checks the load against the user's other work.",
+      "expectations": [
+        "Calculates about 100 prospects a quarter, roughly 8 a week",
+        "Labels the conversion rate as an assumption, not a measured result",
+        "Compares the result with the floor of 5 a week per signal",
+        "Raises balancing the research load against delivery and other work"
+      ]
+    }
+  ],
+  "trigger_queries": [
+    {
+      "query": "find me ten companies worth contacting this week",
+      "should_trigger": true
+    },
+    {
+      "query": "build a prospect list of UK firms hiring a sales manager",
+      "should_trigger": true
+    },
+    {
+      "query": "research this company before I reach out to them",
+      "should_trigger": true
+    },
+    {
+      "query": "I need more pipeline, who should I be talking to",
+      "should_trigger": true
+    },
+    {
+      "query": "write an outreach sequence for these three accounts",
+      "should_trigger": true
+    },
+    {
+      "query": "find the right person to contact at this firm and check their email",
+      "should_trigger": true
+    },
+    {
+      "query": "make this week's research pack",
+      "should_trigger": true
+    },
+    {
+      "query": "find look-alike companies to my best clients",
+      "should_trigger": true
+    },
+    {
+      "query": "is it legal to cold email this sole trader?",
+      "should_trigger": true
+    },
+    {
+      "query": "generate leads for my consultancy",
+      "should_trigger": true
+    },
+    {
+      "query": "reply to this person who filled in our form",
+      "should_trigger": false
+    },
+    {
+      "query": "price this piece of work",
+      "should_trigger": false
+    },
+    {
+      "query": "what's the status of my open deals",
+      "should_trigger": false
+    },
+    {
+      "query": "set up the business profile",
+      "should_trigger": false
+    },
+    {
+      "query": "research the history of the Roman empire",
+      "should_trigger": false
+    },
+    {
+      "query": "find me a new job in sales operations",
+      "should_trigger": false
+    },
+    {
+      "query": "look up a company's accounts for my own due diligence before investing",
+      "should_trigger": false
+    },
+    {
+      "query": "write a LinkedIn post about our new case study",
+      "should_trigger": false
+    },
+    {
+      "query": "scrape every email address from this website",
+      "should_trigger": false
+    },
+    {
+      "query": "who are my competitors and what do they charge",
+      "should_trigger": false
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "skill_name": "business-setup",
+  "note": "Synthetic cases. Firms and people are invented.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I run a two-person consultancy in Bristol and want to start using your sales skills. There's no business folder yet. We're in Claude Code and you can write files here. Set me up.",
+      "expected_output": "Checks capabilities, recommends files as the store with a one-line reason, fills what it can from existing material, then asks a short batch of questions each with a default. Shows the profile before saving.",
+      "expectations": [
+        "States what it checked about the assistant's capabilities before choosing a store",
+        "Recommends files as the record store and gives one reason",
+        "Asks questions in a batch of four or fewer, each with a default",
+        "Does not save the profile before the user approves it",
+        "Writes unknown rather than guessing for anything not given"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's our current business/profile.md (attached below). Our day rate went up to 1,100 GBP from this month. Update the profile.\n\n# Business profile\n## Offer and prices\n- Day rate: 900 GBP (user said)\n- Lowest effective day rate we accept (the floor): 750 GBP (user said)\n## Capacity\n- Days a week for client work: 3 (user said)",
+      "expected_output": "Edits only the day rate, asks whether the floor changes too, keeps every other section unchanged.",
+      "expectations": [
+        "Changes the day rate to 1,100 GBP",
+        "Does not rewrite or drop other sections",
+        "Asks whether the floor should change as well"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm using you in a chat app on my phone. You can't keep files between chats. We already keep clients and deals in a HubSpot account that's connected here. Set up the sales skills.",
+      "expected_output": "Recommends the existing CRM as the store, not files, and maps the records in RECORDS.md to CRM objects and fields.",
+      "expectations": [
+        "Recommends the connected CRM rather than files",
+        "Explains that files would not persist in this app",
+        "Produces a field mapping from the records to the CRM"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "For the voice section, here are three emails I asked ChatGPT to write in my style last week. Use them.",
+      "expected_output": "Declines to build the voice from generated text and asks for emails the user actually sent.",
+      "expectations": [
+        "Does not derive voice rules from the generated emails",
+        "Asks for five to ten emails the user actually sent",
+        "Offers to mark voice as not set in the meantime"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I'm a sole trader. I keep a spreadsheet of about 200 prospects with names and work emails. I haven't registered with anyone for data protection. Is that fine?",
+      "expected_output": "Flags that holding a prospect list usually means paying the ICO data protection fee, points to the ICO fee self-assessment, and does not give legal advice.",
+      "expectations": [
+        "Says the ICO data protection fee likely applies",
+        "Points to the ICO's fee self-assessment",
+        "Does not present the answer as legal advice",
+        "Records the ICO fee as no or unknown in the profile"
+      ]
+    }
+  ],
+  "trigger_queries": [
+    {"query": "set up the sales skills for my business", "should_trigger": true},
+    {"query": "I'm new here, how do I get started with the BoringBits skills?", "should_trigger": true},
+    {"query": "update our day rate in the business profile", "should_trigger": true},
+    {"query": "we've moved our client records into a new CRM, change where the skills save things", "should_trigger": true},
+    {"query": "review my business details, the offer has changed", "should_trigger": true},
+    {"query": "can you learn how I write emails so drafts sound like me", "should_trigger": true},
+    {"query": "check whether we need to pay the ICO fee and register for VAT", "should_trigger": true},
+    {"query": "what research tools should the prospecting skill use for my company", "should_trigger": true},
+    {"query": "there's no business profile yet, create one", "should_trigger": true},
+    {"query": "change how many days a week I spend on client work", "should_trigger": true},
+    {"query": "here's an enquiry from a new lead, what should I do", "should_trigger": false},
+    {"query": "find me ten companies to contact this week", "should_trigger": false},
+    {"query": "write a proposal for the logistics firm", "should_trigger": false},
+    {"query": "review my pipeline and tell me what to chase", "should_trigger": false},
+    {"query": "set up a new Next.js project with TypeScript", "should_trigger": false},
+    {"query": "configure my Claude Code settings.json permissions", "should_trigger": false},
+    {"query": "help me write a PRD for a booking app", "should_trigger": false},
+    {"query": "install the GitHub CLI", "should_trigger": false},
+    {"query": "draft my LinkedIn about section", "should_trigger": false},
+    {"query": "how do I file my self assessment tax return", "should_trigger": false}
+  ]
+}
