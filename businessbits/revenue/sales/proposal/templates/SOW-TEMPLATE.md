@@ -41,6 +41,7 @@ Under the terms of business dated [date]
    [Fixed price / day rate / retainer]: [amount] [VAT statement].
    Payment: [milestones]. Invoices due in [14] days.
    Third-party costs: [billed to the client's own accounts at cost].
+   Not in this price: [the exclusions from section 3, in one line].
 
 10. Changes
     Anything not in sections 3 and 4 is a change. We send a change note

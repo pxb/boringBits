@@ -1,12 +1,12 @@
 ---
 name: proposal
-description: Prices and writes a proposal and statement of work for a small consultancy or agency, and handles change notes once work is signed. Sets the price from value and the business's floor, writes scope, exclusions, acceptance and payment so scope creep has a written answer, and checks capacity before anything goes out. Use when the user needs a quote, proposal, statement of work or price, asks whether to offer a discount or how to handle pushback on price, or when a client asks for something extra during a project.
+description: Prices and writes a proposal and statement of work for a small consultancy or agency, and handles change notes once work is signed. Sets the price from value and the business's floor, writes scope, exclusions, acceptance and payment so scope creep has a written answer, and checks capacity before anything goes out. Use when the user needs a quote, proposal, statement of work or price, asks whether to offer a discount, how to handle pushback on price or how the price compares with the alternatives, or when a client asks for something extra during a project.
 license: MIT
 compatibility: Any assistant that can read these files. Recording needs persistent files or a connected store set up by business-setup.
 metadata:
   author: Pedro Borrero, borre.ro
   support: none
-  version: "0.1"
+  version: "0.2"
   status: draft
 ---
 
@@ -58,13 +58,19 @@ Compare the estimated days with free days in the delivery window: the profile's 
 
 ## 6. Set the price (Judge, then Approve)
 
-Follow [PRICING.md](references/PRICING.md). In short: choose the basis by the kind of service, check the effective day rate clears the floor, write one return-on-investment line from the buyer's own numbers, and name any discount with the full price it steps up to. The user sets the final figure.
+Follow [PRICING.md](references/PRICING.md). In short: choose the basis by the kind of service, check the effective day rate clears the floor, write one return-on-investment line from the buyer's own numbers, and name any discount with the full price it steps up to. Extras take one shape across the document, and a changed line keeps the agreed total. The user sets the final figure.
+
+If the buyer or the user asks how the price compares with the market, follow [MARKET-COMPARISON.md](references/MARKET-COMPARISON.md): compare routes that do the same job, area by area, per year, with payback against each one.
 
 ## 7. Write the proposal and statement of work (Judge)
 
 Use [SOW-TEMPLATE.md](templates/SOW-TEMPLATE.md). The proposal is short and positive: their problem, what changes, proof, price, one next step. The statement of work states everything plainly: deliverables, what's included, limits, exclusions, client responsibilities with dates, assumptions, timeline, acceptance, payment, changes and support.
 
-- Limits and exclusions belong in the statement of work, never in sales copy.
+- Limits and exclusions belong in the statement of work, never in sales copy. Restate them in one line beside the price, before the sign-off, so the buyer reads the scope before deciding. Write them from what a buyer would reasonably assume each priced line includes and it doesn't. If a later brief puts back something the exclusions deny, move it into that line and tell the user the price now buys more.
+- The cover or opening states the deal: who it's for, what it covers, the price and the timeline, with the price and timeline taken from the same figures as the price table.
+- The brief's parts, the deliverables and the timeline run in one order. The timeline goes stage by stage from acceptance, saying what lands in each.
+- Every figure about the client (visitors, sales, hours) has a source and a date, kept on the proposal record, not printed on the page. Its label names the unit and the window ("Visits in the last 30 days"). A figure the client confirmed from their own systems is confirmed.
+- Section labels are nouns: Deliverables, Timeline, Pricing, Responsibilities, Not included.
 - Prices sit small, under the thing being sold, never the biggest element on the page.
 - No claim the profile's proof can't back.
 - The user's voice for the covering message.
@@ -72,6 +78,15 @@ Use [SOW-TEMPLATE.md](templates/SOW-TEMPLATE.md). The proposal is short and posi
 ## 8. Approve (Approve)
 
 Show the user the price, the statement of work and the covering message. Nothing goes to the client until the user approves that exact version.
+
+Ask once whether the user wants the covering message written or only its outline. If they want the outline, give the numbered parts and the figures to lead with, and stop. The message itself:
+
+1. One line on what the proposal covers.
+2. The link or attachment on its own line, and anyone else they can pass it to.
+3. The one decision, with the full offer first and any options named as outside the total.
+4. Questions as a short numbered list, so one reply answers everything.
+
+Under 200 words, the same headline figure as the proposal, and no feature lists. A draft written before a price change is stale: rewrite it from the settled figures, and tell the user what the old one had wrong.
 
 ## 9. Changes after signing (Judge, then Approve)
 
@@ -92,6 +107,7 @@ Proposal record with version, price, days and status. Opportunity stage moved to
 - The statement of work has an acceptance test, client responsibilities with dates, and who owns the work and its upkeep.
 - The days fit capacity, or the user has been told they don't.
 - Every claim in the proposal has proof in the profile.
+- The total is the sum of its lines, and the cover, the price table and the covering message show the same figure.
 - Nothing was sent.
 
 ## Output
@@ -113,6 +129,9 @@ Pricing from scratch, writing the proposal and statement of work, and checking t
 | The effective day rate is under the floor | Change the scope or the price, not the estimate |
 | Committed work fills the months it would run | Offer a later start or a phase |
 | No owner on the buyer's side | Make ownership a term of the proposal |
+| A line's price changes after drafting | Hold the total, move another line, and update every place the line appears |
+| The buyer asks how the price compares | Build the comparison in [MARKET-COMPARISON.md](references/MARKET-COMPARISON.md); no opinion without the numbers |
+| The instruction could mean an extra inside the total or outside it | Use the shape the document already uses, and tell the user what you assumed and the change that flips it |
 
 ## Never
 
@@ -121,6 +140,7 @@ Pricing from scratch, writing the proposal and statement of work, and checking t
 - absorb out-of-scope work silently
 - promise a start date the capacity check can't support
 - mark up third-party costs unless the profile says the business does
+- type a total by hand, or print a cost nobody supplied as if it were sourced
 
 ## About this skill
 

@@ -84,6 +84,41 @@
         "If a discount is used, names it and shows the full price",
         "Starts no work and sends nothing"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "The buyer asked how our 6,000 GBP build compares with just paying for an off-the-shelf booking subscription. They sell about 400 tickets a year at 12 GBP. Put the comparison together.",
+      "expected_output": "Builds a cost model rather than an opinion: the build once, each route's running cost per year for five years with a cumulative total, and per-ticket fees at 12 GBP. Notes which jobs the subscription doesn't cover, prices it at the tier 400 tickets needs, keeps card fees in the row that pays them and gives payback against the subscription. Marks any figure it doesn't have as an assumption to confirm.",
+      "expectations": [
+        "Compares year by year with a cumulative total, not one headline figure",
+        "Models the per-ticket fees at the buyer's 12 GBP price",
+        "Names any jobs the subscription route does not cover",
+        "Gives payback or the year the build becomes cheaper against the subscription",
+        "Marks unknown costs as assumptions instead of inventing them"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Proposal is 4,500 GBP for the build plus two optional extras at 600 GBP and 400 GBP. Draft the outline of the covering email.",
+      "expected_output": "Leads with the full offer including both extras, then shows the trim as a ladder (all in, one off, both off), states that the extras sit outside the 4,500 GBP total, and keeps to an outline with numbered parts rather than writing the email.",
+      "expectations": [
+        "Leads with the full offer, not the stripped price",
+        "Shows the options as a ladder the buyer can pick from",
+        "Says the extras sit outside the headline total",
+        "Gives an outline, not finished email prose",
+        "Sends nothing"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "We agreed 5,000 GBP total with the client. They now want the website line to go from 1,200 GBP to 1,500 GBP because we added a page. Update the proposal.",
+      "expected_output": "Holds the agreed 5,000 GBP total by moving another line down by 300 GBP, or flags that the total would otherwise change, tells the user which line moved, and lists every place the change must reach: cover price, subtotal, total, timeline and exclusions.",
+      "expectations": [
+        "Keeps the agreed total, or asks the user before changing it",
+        "Says which line moved and by how much",
+        "Lists the other places in the document the change reaches",
+        "Does not send the updated proposal without approval"
+      ]
     }
   ],
   "trigger_queries": [

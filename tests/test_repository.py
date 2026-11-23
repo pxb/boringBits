@@ -58,7 +58,7 @@ SALES_RESOURCES = {
     "business-setup": {"templates/PROFILE-TEMPLATE.md"},
     "enquiry": set(),
     "prospecting": {"references/RESEARCH-METHOD.md", "references/UK-CONTACT-RULES.md"},
-    "proposal": {"references/PRICING.md", "templates/SOW-TEMPLATE.md"},
+    "proposal": {"references/PRICING.md", "references/MARKET-COMPARISON.md", "templates/SOW-TEMPLATE.md"},
     "pipeline": set(),
 }
 RESOURCE_DIRS = {"references", "templates", "scripts", "assets"}
