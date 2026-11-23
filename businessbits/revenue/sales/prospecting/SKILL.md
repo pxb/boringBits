@@ -101,6 +101,25 @@ Create or update organisation and contact records for accounts the user accepts,
 - Paid tool use is within the profile's budget and recorded.
 - Nothing was sent.
 
+## Output
+
+- A research pack for the user: each account with its signal, dated evidence links, named contacts checked two ways, the UK contact-rule basis for each, and a draft sequence.
+- Organisation and person records from [RECORDS.md](RECORDS.md), with organisations at `prospect`.
+
+## What it replaces
+
+Finding companies worth contacting, researching each one, finding and checking a named contact, and writing the first emails. Time saved: not yet measured.
+
+## When it goes wrong
+
+| Problem | What to do |
+|---|---|
+| No web search or browsing here | Say so, and work only from sources the user provides |
+| A contact can't be checked two ways | Leave them out. Never guess an email address |
+| The evidence is stale or undated | Drop the account, or label the evidence with its date |
+| An account is on the suppression list or already a client | Skip it |
+| A paid tool reaches its monthly budget | Stop using it and say so |
+
 ## Never
 
 - send, schedule or queue a message
@@ -111,4 +130,4 @@ Create or update organisation and contact records for accounts the user accepts,
 
 ## About this skill
 
-Made by Pedro Borrero at borre.ro, from the research method behind two working prospecting loops. Part of the BoringBits sales skills for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.
+Made by Pedro Borrero at borre.ro, from the research method behind two working prospecting loops. Part of BusinessBits, in the BoringBits repository, for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.

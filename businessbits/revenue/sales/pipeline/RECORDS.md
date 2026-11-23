@@ -1,6 +1,6 @@
 # Business records
 
-The sales skills read and write the same records. This file defines them. Every skill carries an identical copy, so each one works when installed alone. The canonical copy is `shared/RECORDS.md` in the BoringBits repository.
+The sales skills read and write the same records. This file defines them. Every skill carries an identical copy, so each one works when installed alone. The canonical copy is `businessbits/RECORDS.md` in the BoringBits repository.
 
 ## Where records live
 

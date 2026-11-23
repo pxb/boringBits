@@ -92,6 +92,25 @@ After the user approves and sends: an activity record with `approved_by`, the en
 - No field holds a guess.
 - Nothing was sent without approval of that exact message.
 
+## Output
+
+- Records from [RECORDS.md](RECORDS.md): the enquiry, the organisation (as `lead`) and the person, created once or updated if they exist. An opportunity at `discovery` when a call is booked.
+- One next step with a date.
+- A reply in the user's voice, waiting for their approval: shown to them, or saved as an email draft when this assistant can create drafts.
+
+## What it replaces
+
+Reading the enquiry, checking whether the sender is already known, weighing the fit, writing the reply and logging it. Time saved: not yet measured.
+
+## When it goes wrong
+
+| Problem | What to do |
+|---|---|
+| No business profile | Run business setup first, or judge with the user and flag every gap |
+| The sender already exists in the records | Update their records; never create a duplicate |
+| Not enough to judge fit | Ask the one question that decides it in the reply, rather than decline |
+| No voice set | Draft plainly and say the voice isn't set |
+
 ## Never
 
 - send a reply without the user approving that exact message
@@ -102,4 +121,4 @@ After the user approves and sends: an activity record with `approved_by`, the en
 
 ## About this skill
 
-Made by Pedro Borrero at borre.ro. Part of the BoringBits sales skills for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.
+Made by Pedro Borrero at borre.ro. Part of BusinessBits, in the BoringBits repository, for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.

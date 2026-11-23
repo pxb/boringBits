@@ -94,6 +94,24 @@ The user approves each chaser and each closure. After they do:
 - Capacity was compared and any overload named.
 - Nothing was sent or closed without the user's yes.
 
+## Output
+
+- The weekly review for the user: open items, chasers drafted, items proposed for closing, capacity by month, and outcomes since the last review.
+- After approval, records from [RECORDS.md](RECORDS.md) updated: activities, stages, next steps and dates, `outcomes.md` and `suppression.md`, or their places in the user's CRM.
+
+## What it replaces
+
+Going through every open deal, working out what to chase or close, drafting the chasers and checking whether the work would fit the diary. Time saved: not yet measured.
+
+## When it goes wrong
+
+| Problem | What to do |
+|---|---|
+| Deals are kept in more than one place | Bring the facts into the one store before reviewing |
+| The CRM's stages aren't mapped | Ask the user, and add the mapping to the profile |
+| No view on how likely a proposal is | Ask the user. Never invent a probability |
+| A next step was agreed but not recorded | Ask and record it |
+
 ## Never
 
 - send a chaser or close a deal without the user's yes
@@ -103,4 +121,4 @@ The user approves each chaser and each closure. After they do:
 
 ## About this skill
 
-Made by Pedro Borrero at borre.ro. Part of the BoringBits sales skills for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.
+Made by Pedro Borrero at borre.ro. Part of BusinessBits, in the BoringBits repository, for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.

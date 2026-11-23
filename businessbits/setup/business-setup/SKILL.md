@@ -1,6 +1,6 @@
 ---
 name: business-setup
-description: Sets up the BoringBits sales skills for one small UK business. Works out what this assistant can do, picks where sales records live, writes the business profile (offer, prices, buyers, proof, voice, capacity, research tools) and checks the basic UK registrations. Use the first time someone uses the enquiry, prospecting, proposal or pipeline skills, when there is no business profile yet, or when they ask to set up, change or review their business details.
+description: Sets up the BusinessBits skills for one small UK business. Works out what this assistant can do, picks where sales records live, writes the business profile (offer, prices, buyers, proof, voice, capacity, research tools) and checks the basic UK registrations. Use the first time someone uses the enquiry, prospecting, proposal or pipeline skills, when there is no business profile yet, or when they ask to set up, change or review their business details.
 license: MIT
 compatibility: Any assistant that can read these files. Saving the profile needs either persistent files or a connected store such as a CRM, database or spreadsheet.
 metadata:
@@ -114,6 +114,25 @@ Then tell the user what they can ask for now:
 - The record store is reachable, and a test record can be written and read back. Remove the test record afterwards.
 - Nothing was sent, bought or connected.
 
+## Output
+
+- The business profile, following [PROFILE-TEMPLATE.md](PROFILE-TEMPLATE.md), with a source for every fact. It goes to `business/profile.md` in the user's working folder, or a profile record in their store. Never into a shared or public repository.
+- With files, the empty `business/records/` folders from [RECORDS.md](RECORDS.md).
+- A short note to the user of what's set, what's `unknown` and what to try first.
+
+## What it replaces
+
+The owner explaining their offer, prices, buyers and rules again in every conversation. They write it down once, in a form every other skill reads. Time saved: not yet measured.
+
+## When it goes wrong
+
+| Problem | What to do |
+|---|---|
+| Files don't persist and no store is connected | Say so. Give the user the finished profile to keep and paste in next time |
+| The user can't answer a question | Write `unknown` and move on |
+| A profile already exists | Update the parts that changed, never the whole profile |
+| The store can't be written to or read back | Stop before saving and say what failed |
+
 ## Never
 
 - move, merge or delete existing records without the user's yes
@@ -123,4 +142,4 @@ Then tell the user what they can ask for now:
 
 ## About this skill
 
-Made by Pedro Borrero at borre.ro. Part of the BoringBits sales skills for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.
+Made by Pedro Borrero at borre.ro. Part of BusinessBits, in the BoringBits repository, for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.

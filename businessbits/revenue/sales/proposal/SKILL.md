@@ -94,6 +94,26 @@ Proposal record with version, price, days and status. Opportunity stage moved to
 - Every claim in the proposal has proof in the profile.
 - Nothing was sent.
 
+## Output
+
+- A proposal and statement of work, following [SOW-TEMPLATE.md](SOW-TEMPLATE.md), waiting for the user's approval.
+- Records from [RECORDS.md](RECORDS.md): the proposal, and the opportunity moved to `proposal`, then to `won` or `lost` with a reason.
+- After signing, change notes priced as add-ons.
+
+## What it replaces
+
+Pricing from scratch, writing the proposal and statement of work, and checking the price against the floor and the diary. Time saved: not yet measured.
+
+## When it goes wrong
+
+| Problem | What to do |
+|---|---|
+| Discovery left gaps | Stop at the confirm step and list what's missing |
+| The buyer gave no numbers for the value line | Ask for them. Never invent them |
+| The effective day rate is under the floor | Change the scope or the price, not the estimate |
+| Committed work fills the months it would run | Offer a later start or a phase |
+| No owner on the buyer's side | Make ownership a term of the proposal |
+
 ## Never
 
 - send a proposal, price or change note without the user approving that exact version
@@ -104,4 +124,4 @@ Proposal record with version, price, days and status. Opportunity stage moved to
 
 ## About this skill
 
-Made by Pedro Borrero at borre.ro. Part of the BoringBits sales skills for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.
+Made by Pedro Borrero at borre.ro. Part of BusinessBits, in the BoringBits repository, for one or two person UK businesses. Draft. Free to use under MIT, with credit. Provided as is, with no support.
