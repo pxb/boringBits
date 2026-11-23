@@ -1,6 +1,6 @@
 ---
 name: proposal
-description: Prices and writes a proposal and statement of work for a small consultancy or agency, and handles change notes once work is signed. Sets the price from value and the business's floor, writes scope, exclusions, acceptance and payment so scope creep has a written answer, and checks capacity before anything goes out. Use when the user needs a quote, proposal, statement of work or price, or when a client asks for something extra during a project.
+description: Prices and writes a proposal and statement of work for a small consultancy or agency, and handles change notes once work is signed. Sets the price from value and the business's floor, writes scope, exclusions, acceptance and payment so scope creep has a written answer, and checks capacity before anything goes out. Use when the user needs a quote, proposal, statement of work or price, asks whether to offer a discount or how to handle pushback on price, or when a client asks for something extra during a project.
 license: MIT
 compatibility: Any assistant that can read these files. Recording needs persistent files or a connected store set up by business-setup.
 metadata:
