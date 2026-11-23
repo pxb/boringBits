@@ -52,13 +52,16 @@ BB_CATALOGUE = {
 }
 # Contract sections every BusinessBits skill carries, beyond its numbered steps.
 CONTRACT_HEADINGS = ("## Output", "## What it replaces", "## When it goes wrong", "## Never", "## About this skill")
+# Supporting files sit in the Agent Skills subfolders, linked from SKILL.md, so hosts that copy
+# only referenced files from those folders (Hermes installs from GitHub) bring them along.
 SALES_RESOURCES = {
-    "business-setup": {"PROFILE-TEMPLATE.md"},
+    "business-setup": {"templates/PROFILE-TEMPLATE.md"},
     "enquiry": set(),
-    "prospecting": {"RESEARCH-METHOD.md", "UK-CONTACT-RULES.md"},
-    "proposal": {"PRICING.md", "SOW-TEMPLATE.md"},
+    "prospecting": {"references/RESEARCH-METHOD.md", "references/UK-CONTACT-RULES.md"},
+    "proposal": {"references/PRICING.md", "templates/SOW-TEMPLATE.md"},
     "pipeline": set(),
 }
+RESOURCE_DIRS = {"references", "templates", "scripts", "assets"}
 # sha256 of lower-case private names (clients, partners, people, internal systems).
 # Stored as hashes so the gate itself does not publish them.
 PRIVATE_NAME_HASHES = {
@@ -349,7 +352,7 @@ class RepositoryTests(unittest.TestCase):
             ".github/workflows/tests.yml",
         }
         for skill, extra in SALES_RESOURCES.items():
-            for name in {"SKILL.md", "RECORDS.md", "evals/evals.json"} | extra:
+            for name in {"SKILL.md", "references/RECORDS.md", "evals/evals.json"} | extra:
                 expected.add(f"{PATHS[skill]}/{name}")
         files = {p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*") if p.is_file() and ".git" not in p.relative_to(ROOT).parts}
         self.assertEqual(files, expected)
@@ -399,7 +402,7 @@ class RepositoryTests(unittest.TestCase):
         canonical = (ROOT / BB_RECORDS).read_bytes()
         for skill in sorted(SALES_SKILLS):
             with self.subTest(skill=skill):
-                self.assertEqual((ROOT / PATHS[skill] / "RECORDS.md").read_bytes(), canonical,
+                self.assertEqual((ROOT / PATHS[skill] / "references/RECORDS.md").read_bytes(), canonical,
                                  f"Copy {BB_RECORDS} into the skill unchanged")
 
     def test_sales_skill_shape(self):
@@ -412,10 +415,16 @@ class RepositoryTests(unittest.TestCase):
                 for heading in CONTRACT_HEADINGS:
                     self.assertIn(heading, text)
                 self.assertRegex(text, r"(?:\(|then )Approve\b", "Every sales skill names an approval step")
-                self.assertIn("[RECORDS.md](RECORDS.md)", text)
-                for target in re.findall(r"\[[^\]\n]+\]\(([^\s)]+)\)", text):
-                    if not target.startswith("http"):
-                        self.assertNotIn("/", target, f"{skill} links outside its own folder: {target}")
+                self.assertIn("[RECORDS.md](references/RECORDS.md)", text)
+                links = {t for t in re.findall(r"\[[^\]\n]+\]\(([^\s)]+)\)", text) if not t.startswith("http")}
+                for target in links:
+                    parts = target.split("/")
+                    self.assertEqual(len(parts), 2, f"{skill}: link one level down, inside its own folder: {target}")
+                    self.assertIn(parts[0], RESOURCE_DIRS, f"{skill}: supporting files go in {sorted(RESOURCE_DIRS)}: {target}")
+                folder = ROOT / PATHS[skill]
+                files = {f.relative_to(folder).as_posix() for f in folder.rglob("*") if f.is_file()}
+                self.assertEqual({f for f in files if f != "SKILL.md" and not f.startswith("evals/")}, links,
+                                 f"{skill}: every supporting file is linked from SKILL.md, and nothing else sits beside it")
 
     def test_sales_evals(self):
         for skill in sorted(SALES_SKILLS):

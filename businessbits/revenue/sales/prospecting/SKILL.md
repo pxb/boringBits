@@ -18,7 +18,7 @@ Steps are labelled: **Fetch** reads a fact exactly, **Judge** needs weighing, **
 
 ## 1. Read the profile and records (Fetch)
 
-Read `business/profile.md` or the profile record in the user's store: buyers, proof, voice, channels, research tools and budget. Read [RECORDS.md](RECORDS.md). If there's no profile, offer business-setup first.
+Read `business/profile.md` or the profile record in the user's store: buyers, proof, voice, channels, research tools and budget. Read [RECORDS.md](references/RECORDS.md). If there's no profile, offer business-setup first.
 
 Load the suppression list, current clients and every organisation with an open enquiry or opportunity. Nothing on those lists goes into a pack.
 
@@ -55,7 +55,7 @@ Industry codes on the register are self-reported. Treat them as a hint, never a 
 
 ## 4. Research each account (Fetch, then Check)
 
-Follow [RESEARCH-METHOD.md](RESEARCH-METHOD.md) for every account. In short:
+Follow [RESEARCH-METHOD.md](references/RESEARCH-METHOD.md) for every account. In short:
 
 1. Confirm the legal entity on the company register, and resolve groups: if the parent or a sister company is a client or in the pipeline, suppress it.
 2. Confirm the domain resolves and is the real email domain.
@@ -68,7 +68,7 @@ Every fact carries a source link and one status: **Verified** (primary source), 
 
 ## 5. Check the UK contact rules (Check)
 
-Read [UK-CONTACT-RULES.md](UK-CONTACT-RULES.md). For each contact, set `basis` and the channel allowed. Sole traders and ordinary partnerships need consent or a soft opt-in before marketing email. A contact with no lawful basis for a channel doesn't get that channel.
+Read [UK-CONTACT-RULES.md](references/UK-CONTACT-RULES.md). For each contact, set `basis` and the channel allowed. Sole traders and ordinary partnerships need consent or a soft opt-in before marketing email. A contact with no lawful basis for a channel doesn't get that channel.
 
 ## 6. Draft the sequence (Judge, then Check)
 
@@ -104,7 +104,7 @@ Create or update organisation and contact records for accounts the user accepts,
 ## Output
 
 - A research pack for the user: each account with its signal, dated evidence links, named contacts checked two ways, the UK contact-rule basis for each, and a draft sequence.
-- Organisation and person records from [RECORDS.md](RECORDS.md), with organisations at `prospect`.
+- Organisation and person records from [RECORDS.md](references/RECORDS.md), with organisations at `prospect`.
 
 ## What it replaces
 
