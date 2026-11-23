@@ -18,7 +18,7 @@ Steps are labelled: **Fetch** reads a fact exactly, **Judge** needs weighing, **
 
 ## 1. Read the profile and the opportunity (Fetch)
 
-Read `business/profile.md` or the profile record: offer, prices, day rate, floor, payment terms, proof, capacity, voice. Read [RECORDS.md](RECORDS.md) and the opportunity record with its notes and call activities. If there's no profile, offer business-setup first.
+Read `business/profile.md` or the profile record: offer, prices, day rate, floor, payment terms, proof, capacity, voice. Read [RECORDS.md](references/RECORDS.md) and the opportunity record with its notes and call activities. If there's no profile, offer business-setup first.
 
 ## 2. Decide whether to propose at all (Judge)
 
@@ -58,11 +58,11 @@ Compare the estimated days with free days in the delivery window: the profile's 
 
 ## 6. Set the price (Judge, then Approve)
 
-Follow [PRICING.md](PRICING.md). In short: choose the basis by the kind of service, check the effective day rate clears the floor, write one return-on-investment line from the buyer's own numbers, and name any discount with the full price it steps up to. The user sets the final figure.
+Follow [PRICING.md](references/PRICING.md). In short: choose the basis by the kind of service, check the effective day rate clears the floor, write one return-on-investment line from the buyer's own numbers, and name any discount with the full price it steps up to. The user sets the final figure.
 
 ## 7. Write the proposal and statement of work (Judge)
 
-Use [SOW-TEMPLATE.md](SOW-TEMPLATE.md). The proposal is short and positive: their problem, what changes, proof, price, one next step. The statement of work states everything plainly: deliverables, what's included, limits, exclusions, client responsibilities with dates, assumptions, timeline, acceptance, payment, changes and support.
+Use [SOW-TEMPLATE.md](templates/SOW-TEMPLATE.md). The proposal is short and positive: their problem, what changes, proof, price, one next step. The statement of work states everything plainly: deliverables, what's included, limits, exclusions, client responsibilities with dates, assumptions, timeline, acceptance, payment, changes and support.
 
 - Limits and exclusions belong in the statement of work, never in sales copy.
 - Prices sit small, under the thing being sold, never the biggest element on the page.
@@ -96,8 +96,8 @@ Proposal record with version, price, days and status. Opportunity stage moved to
 
 ## Output
 
-- A proposal and statement of work, following [SOW-TEMPLATE.md](SOW-TEMPLATE.md), waiting for the user's approval.
-- Records from [RECORDS.md](RECORDS.md): the proposal, and the opportunity moved to `proposal`, then to `won` or `lost` with a reason.
+- A proposal and statement of work, following [SOW-TEMPLATE.md](templates/SOW-TEMPLATE.md), waiting for the user's approval.
+- Records from [RECORDS.md](references/RECORDS.md): the proposal, and the opportunity moved to `proposal`, then to `won` or `lost` with a reason.
 - After signing, change notes priced as add-ons.
 
 ## What it replaces

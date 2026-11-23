@@ -35,7 +35,7 @@ Tell the user in two or three lines what you found. If something is unclear, ask
 
 ## 3. Choose where records live (Judge, then Approve)
 
-Read [RECORDS.md](RECORDS.md). Recommend one store:
+Read [RECORDS.md](references/RECORDS.md). Recommend one store:
 
 - **Files** when files persist and the user has no sales records elsewhere. This is the default.
 - **Their existing CRM, database or spreadsheet** when they already keep sales records there, or when files don't persist. Map each record and field in RECORDS.md to their tables and fields, including their own deal stages to discovery, proposal, won and lost, and write the mapping into the profile. Fields with no home stay in the notes of the nearest record. Work with the CRM as it is set up; don't ask the user to change it to suit the skills.
@@ -44,7 +44,7 @@ Say why in one line. The user decides. Never move existing records without their
 
 ## 4. Build the profile from what already exists (Fetch, then Judge)
 
-Copy [PROFILE-TEMPLATE.md](PROFILE-TEMPLATE.md). Fill it from material the user already has before asking anything: their website, a recent proposal, a price list, their LinkedIn profile, past invoices. Quote the source next to each fact.
+Copy [PROFILE-TEMPLATE.md](templates/PROFILE-TEMPLATE.md). Fill it from material the user already has before asking anything: their website, a recent proposal, a price list, their LinkedIn profile, past invoices. Quote the source next to each fact.
 
 Then ask only for what is still missing, in short batches of three or four questions. Give each question a default the user can accept with one word. Good defaults:
 
@@ -116,8 +116,8 @@ Then tell the user what they can ask for now:
 
 ## Output
 
-- The business profile, following [PROFILE-TEMPLATE.md](PROFILE-TEMPLATE.md), with a source for every fact. It goes to `business/profile.md` in the user's working folder, or a profile record in their store. Never into a shared or public repository.
-- With files, the empty `business/records/` folders from [RECORDS.md](RECORDS.md).
+- The business profile, following [PROFILE-TEMPLATE.md](templates/PROFILE-TEMPLATE.md), with a source for every fact. It goes to `business/profile.md` in the user's working folder, or a profile record in their store. Never into a shared or public repository.
+- With files, the empty `business/records/` folders from [RECORDS.md](references/RECORDS.md).
 - A short note to the user of what's set, what's `unknown` and what to try first.
 
 ## What it replaces

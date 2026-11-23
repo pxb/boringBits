@@ -18,7 +18,7 @@ Steps are labelled: **Fetch** reads a fact exactly, **Judge** needs weighing, **
 
 ## 1. Read the profile and records (Fetch)
 
-Read `business/profile.md` or the profile record: chase rules, capacity, voice. Read [RECORDS.md](RECORDS.md), then every open enquiry, opportunity and proposal, with their latest activities. Keep one store. When it's a CRM, the CRM is the record: read and update it through the profile's mapping, use its own stage names, and don't build a list of your own beside it. If the user keeps notes elsewhere (a spreadsheet, the inbox), bring the facts into the store rather than working from two places.
+Read `business/profile.md` or the profile record: chase rules, capacity, voice. Read [RECORDS.md](references/RECORDS.md), then every open enquiry, opportunity and proposal, with their latest activities. Keep one store. When it's a CRM, the CRM is the record: read and update it through the profile's mapping, use its own stage names, and don't build a list of your own beside it. If the user keeps notes elsewhere (a spreadsheet, the inbox), bring the facts into the store rather than working from two places.
 
 The sales stages are discovery, proposal, won and lost, with scoping inside discovery. Prospects and leads are not deals until discovery is booked. Delivery, acceptance and support happen after `won` and are tracked outside this review.
 
@@ -97,7 +97,7 @@ The user approves each chaser and each closure. After they do:
 ## Output
 
 - The weekly review for the user: open items, chasers drafted, items proposed for closing, capacity by month, and outcomes since the last review.
-- After approval, records from [RECORDS.md](RECORDS.md) updated: activities, stages, next steps and dates, `outcomes.md` and `suppression.md`, or their places in the user's CRM.
+- After approval, records from [RECORDS.md](references/RECORDS.md) updated: activities, stages, next steps and dates, `outcomes.md` and `suppression.md`, or their places in the user's CRM.
 
 ## What it replaces
 

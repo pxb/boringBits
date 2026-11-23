@@ -20,7 +20,7 @@ Steps are labelled: **Fetch** reads a fact exactly, **Judge** needs weighing, **
 
 Read `business/profile.md`, or the profile record in the user's store. You need: who the business is for, its reasons to turn work down, reply time, voice and record store. If there is no profile, say so and offer to run business-setup first. If the user wants an answer now, carry on and mark every judgement that needed the profile as provisional.
 
-Read [RECORDS.md](RECORDS.md) for the enquiry, contact, organisation and activity records.
+Read [RECORDS.md](references/RECORDS.md) for the enquiry, contact, organisation and activity records.
 
 ## 2. Find what already exists (Fetch)
 
@@ -94,7 +94,7 @@ After the user approves and sends: an activity record with `approved_by`, the en
 
 ## Output
 
-- Records from [RECORDS.md](RECORDS.md): the enquiry, the organisation (as `lead`) and the person, created once or updated if they exist. An opportunity at `discovery` when a call is booked.
+- Records from [RECORDS.md](references/RECORDS.md): the enquiry, the organisation (as `lead`) and the person, created once or updated if they exist. An opportunity at `discovery` when a call is booked.
 - One next step with a date.
 - A reply in the user's voice, waiting for their approval: shown to them, or saved as an email draft when this assistant can create drafts.
 
