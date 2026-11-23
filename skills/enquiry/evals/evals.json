@@ -1,0 +1,154 @@
+{
+  "skill_name": "enquiry",
+  "note": "Synthetic cases. Firms and people are invented. Each assumes a profile for a two-person UK consultancy that improves repeated sales and service work, replies the same working day, and offers a free discovery call.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "New form submission from Priya at Harbour Freight Ltd: 'Our board wants us to do something with AI this year. Can you help? What would it cost?' What do I do?",
+      "expected_output": "Records the enquiry, marks fit as partial because no defined piece of work is named, drafts a short reply that asks where time goes today, offers a discovery call, and gives no price. Notes ownership as a term for the proposal rather than a condition for the call.",
+      "expectations": [
+        "Creates one enquiry record using her own words",
+        "Identifies that no defined piece of work is named",
+        "Does not make a named owner a condition for booking the call",
+        "The draft reply contains no price, date or scope promise",
+        "The draft has exactly one call to action",
+        "Sets one next step with a date no later than the same working day",
+        "Says the user must approve the reply before it is sent"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Email from Tom at Ashby Builders: 'Can you build us an AI agent?' That's the whole message.",
+      "expected_output": "Treats it as vague, drafts a reply offering a discovery call aimed at finding the work and asks one question about where time goes today.",
+      "expectations": [
+        "Does not pitch capabilities or describe an agent build",
+        "Asks one question about the work or where time goes",
+        "Offers a discovery call as the single call to action"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "A message just came in from sam@northgate-clinics.co.uk asking to add a second workflow. Northgate Clinics is already a client in our records. Handle the enquiry.",
+      "expected_output": "Recognises an existing client and treats it as account work, not a new enquiry.",
+      "expectations": [
+        "Recognises Northgate Clinics as an existing client",
+        "Does not create a new prospect enquiry record",
+        "Hands it to the user as account work"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Follow-up from Priya at Harbour Freight in the same email thread as yesterday: 'Also, our ops director Ben would join the call.' Update things.",
+      "expected_output": "Updates the existing enquiry and adds Ben as a contact, without creating a second enquiry.",
+      "expectations": [
+        "Updates the existing enquiry record rather than creating a new one",
+        "Adds Ben as a contact linked to the organisation",
+        "Leaves Ben's email as unknown if not given"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Enquiry from a games studio asking us to build a mobile game with in-app purchases. We do sales and service process work. What now?",
+      "expected_output": "Marks it out of scope with a reason and drafts a short, kind decline.",
+      "expectations": [
+        "Marks fit as out-of-scope with a one-line reason",
+        "Drafts a short polite decline",
+        "Records the reason so the enquiry is closed with it"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Lena, the founder of Pinecrest Golf Events, has emailed three times and is clearly technical and keen. She wants us to answer all her customers' questions automatically and run her bookings, for 400 GBP all in, and asks lots of questions about which tools to use herself. Our profile's smallest build is 3,000 GBP. Is she a fit?",
+      "expected_output": "Says interest and engagement don't make a fit: the price she wants can't cover the work and she is mostly asking for advice. Marks fit as out-of-scope or partial with the reason, and drafts a kind reply for approval rather than booking discovery on enthusiasm alone.",
+      "expectations": [
+        "Separates service fit and commercial fit, and says commercial fit fails",
+        "Does not treat her enthusiasm as evidence of fit",
+        "Notes she is asking for advice rather than a piece of work",
+        "Records the reason with the fit judgement",
+        "Drafts the reply for the user's approval and sends nothing"
+      ]
+    }
+  ],
+  "trigger_queries": [
+    {
+      "query": "a lead just emailed asking if we can help with their CRM, what should I reply",
+      "should_trigger": true
+    },
+    {
+      "query": "new contact form submission, is this worth a call?",
+      "should_trigger": true
+    },
+    {
+      "query": "someone was referred to me by an old colleague, how do I respond",
+      "should_trigger": true
+    },
+    {
+      "query": "draft a reply to this enquiry",
+      "should_trigger": true
+    },
+    {
+      "query": "a company asked how much an automation costs, how should I answer",
+      "should_trigger": true
+    },
+    {
+      "query": "should I take this inbound request or turn it down",
+      "should_trigger": true
+    },
+    {
+      "query": "log this new enquiry from LinkedIn",
+      "should_trigger": true
+    },
+    {
+      "query": "a prospect replied to my website chat, what's the next step",
+      "should_trigger": true
+    },
+    {
+      "query": "I got an introduction email from a partner, handle it",
+      "should_trigger": true
+    },
+    {
+      "query": "is this inbound lead a good fit for us",
+      "should_trigger": true
+    },
+    {
+      "query": "find companies hiring sales managers in Leeds",
+      "should_trigger": false
+    },
+    {
+      "query": "write a statement of work for the signed client",
+      "should_trigger": false
+    },
+    {
+      "query": "which deals have gone quiet this week",
+      "should_trigger": false
+    },
+    {
+      "query": "set up my business profile",
+      "should_trigger": false
+    },
+    {
+      "query": "reply to my landlord about the boiler",
+      "should_trigger": false
+    },
+    {
+      "query": "summarise this customer support ticket from a current client",
+      "should_trigger": false
+    },
+    {
+      "query": "write a newsletter about AI adoption",
+      "should_trigger": false
+    },
+    {
+      "query": "fix the contact form on my website, submissions aren't arriving",
+      "should_trigger": false
+    },
+    {
+      "query": "prepare me for tomorrow's call with a prospect",
+      "should_trigger": false
+    },
+    {
+      "query": "chase the invoice that's 30 days overdue",
+      "should_trigger": false
+    }
+  ]
+}

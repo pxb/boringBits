@@ -2,6 +2,7 @@
 from pathlib import Path
 import ast
 import hashlib
+import json
 import re
 import unittest
 from urllib.parse import unquote, urlsplit
@@ -23,7 +24,60 @@ def frontmatter(text):
     return data
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS = {"project-prd", "business-context-map", "workflow-or-agent"}
+SALES_SKILLS = {"business-setup", "enquiry", "prospecting", "proposal", "pipeline"}
+SKILLS = {"project-prd", "business-context-map", "workflow-or-agent"} | SALES_SKILLS
+CATALOGUE = {
+    "skills/project-prd/SKILL.md": "Project PRD",
+    "skills/business-context-map/SKILL.md": "Business context map",
+    "skills/workflow-or-agent/SKILL.md": "Workflow or agent",
+    "skills/business-setup/SKILL.md": "Business setup",
+    "skills/enquiry/SKILL.md": "Enquiry",
+    "skills/prospecting/SKILL.md": "Prospecting",
+    "skills/proposal/SKILL.md": "Proposal",
+    "skills/pipeline/SKILL.md": "Pipeline",
+}
+SALES_RESOURCES = {
+    "business-setup": {"PROFILE-TEMPLATE.md"},
+    "enquiry": set(),
+    "prospecting": {"RESEARCH-METHOD.md", "UK-CONTACT-RULES.md"},
+    "proposal": {"PRICING.md", "SOW-TEMPLATE.md"},
+    "pipeline": set(),
+}
+# sha256 of lower-case private names (clients, partners, people, internal systems).
+# Stored as hashes so the gate itself does not publish them.
+PRIVATE_NAME_HASHES = {
+    "26b037d87338666f1fe5789d872889ce1ac3be091594ed84e7bfa32d221c86f5",
+    "57a4911c9baba00aa0f5e297cccd982e32a136e7f8fbea988a2d26f8e99d02a5",
+    "04f4010bfaae02b8fb74ed32dbdfd5b1cfb7c76b6d7c0b92f591f05d5a6da084",
+    "552bdf4bbc9329b555b93e7c9b6a38f36c6edb58b0e7fca0392f79528cc1b9e6",
+    "9997c063b22332c6307bcdf6076ff91010a0890e9ddf99277b69e6acc31a15dd",
+    "4818c34613a2fa5fb96087aeafd6e40cfd78bbd887f0180585753ae7a3821222",
+    "30bd72aabc1490662c6d57a5dadca8e9f8dce076a079f96acd2c73e2a98ab8d1",
+    "a6a3d81d5168a5b2b7dd2c06aa4c4a28f8e535f2dc7f008bd7ddd1b3c312b9dd",
+    "b55801bba9a4bc509f24427d36084bfbc4e8c688c56a4c4def1a437af86ed166",
+    "aed295549829e61e7af96b0d178d4e91fa99190486a4d19509abeb6718d9ecd0",
+    "e52a1359297822655226696b53192f9085c5f161d1bda5cbaed8e9ceb64c904b",
+    "84245172f59c8bd80e1454c3aa467a8d46a93dbf96c72309d9b3e42afa8b6d08",
+    "b00821c4d40072f66d27a42e4ecf6f2a2a1130fdc50b533e28c79b2987d86fd8",
+    "84cb95fc1f7c2813e74b2ee5b1de25ae400f1caf1d1e0e5f4097e0754b7d80fe",
+    "cb607cc20b6562efe7dcb4cc6e267e69ade727b15c00703c1fd34adb223d3264",
+    "6bc3879851c7e0f01f04183d58ae8ee05af37a48757fe324d96bf98a8eb11d1b",
+    "a2212359b7e79fda79ef39d39ba37804ecc353951e76727f3eb20bffea677d77",
+    "ebb1245696a936b70148d63657017c47c179bb26064832038d1478bb10bc08d9",
+    "28812f61a0e85c8aba2afe971746fd9a94960fe2c344e74e59588399ca3bfce7",
+    "bf79c9b69a5b6ca12f265895aff3ce23c83baf249c484a26dc5f3705c6219731",
+}
+
+
+def private_name_hits(text):
+    words = re.findall(r"[a-z0-9]+", text.lower())
+    hits = set()
+    for size in (1, 2, 3):
+        for i in range(len(words) - size + 1):
+            phrase = " ".join(words[i:i + size])
+            if hashlib.sha256(phrase.encode()).hexdigest() in PRIVATE_NAME_HASHES:
+                hits.add(phrase)
+    return hits
 
 
 class RepositoryTests(unittest.TestCase):
@@ -125,7 +179,7 @@ class RepositoryTests(unittest.TestCase):
             procedure = text.split("---", 2)[2].split("## About this skill")[0]
             self.assertEqual(hashlib.sha256(procedure.encode()).hexdigest(), digest)
 
-    def assert_human_first_skill_table(self, text):
+    def assert_human_first_skill_table(self, text, names=None):
         """Check the reader-facing catalogue, not its paragraph wording."""
         tables = re.findall(r"(?:^\|[^\n]*\|[ \t]*(?:\n|$))+", text, re.M)
         catalogues = [table for table in tables if "skills/" in table]
@@ -133,7 +187,8 @@ class RepositoryTests(unittest.TestCase):
         table = catalogues[0]
         rows = [[cell.strip() for cell in line.strip().strip("|").split("|")]
                 for line in table.splitlines()]
-        self.assertEqual(len(rows), 5, "Expected header, separator and three skills")
+        names = CATALOGUE if names is None else names
+        self.assertEqual(len(rows), len(names) + 2, "Expected header, separator and one row per skill")
         for row in rows:
             self.assertEqual(len(row), 2, "Catalogue needs skill then purpose, no licence column")
         self.assertEqual(rows[0][0], "Skill", "First column must name the skill")
@@ -141,11 +196,6 @@ class RepositoryTests(unittest.TestCase):
         for cell in rows[1]:
             self.assertRegex(cell, r"^:?-{3,}:?$")
         self.assertNotRegex(table, r"(?i)\blicen[cs]e\b|\bMIT\b|\bCC-BY(?:-4\.0)?\b")
-        names = {
-            "skills/project-prd/SKILL.md": "Project PRD",
-            "skills/business-context-map/SKILL.md": "Business context map",
-            "skills/workflow-or-agent/SKILL.md": "Workflow or agent",
-        }
         targets = []
         for first, purpose in rows[2:]:
             match = re.fullmatch(r"\[([^\]\n]+)\]\((skills/[^\s)]+/SKILL\.md)\)", first)
@@ -169,7 +219,8 @@ class RepositoryTests(unittest.TestCase):
             "| [Workflow or agent](skills/workflow-or-agent/SKILL.md) | Plan a process. |\n",
         ]
         valid = header + "".join(rows)
-        self.assert_human_first_skill_table(valid)
+        three = {k: CATALOGUE[k] for k in ("skills/project-prd/SKILL.md", "skills/business-context-map/SKILL.md", "skills/workflow-or-agent/SKILL.md")}
+        self.assert_human_first_skill_table(valid, three)
         old = ("| Need | Read and apply | Licence |\n| --- | --- | --- |\n"
                "| Write a brief | [Project PRD](skills/project-prd/SKILL.md) | MIT |\n"
                "| Map knowledge | [Business context map](skills/business-context-map/SKILL.md) | CC-BY-4.0 |\n"
@@ -192,7 +243,7 @@ class RepositoryTests(unittest.TestCase):
         }
         for name, text in invalid.items():
             with self.subTest(regression=name), self.assertRaises(AssertionError):
-                self.assert_human_first_skill_table(text)
+                self.assert_human_first_skill_table(text, three)
 
     def test_readme_index_and_shared_agent_pointer(self):
         for name in ("README.md", "AGENTS.md", "CLAUDE.md"):
@@ -225,7 +276,7 @@ class RepositoryTests(unittest.TestCase):
     def test_mixed_licences_and_notices(self):
         licence = (ROOT / "LICENSE").read_text()
         notices = (ROOT / "THIRD-PARTY-NOTICES.md").read_text()
-        for phrase in ["MIT License", "CC-BY-4.0", "skills/project-prd", "skills/business-context-map", "skills/workflow-or-agent", "not a blanket MIT licence"]:
+        for phrase in ["MIT License", "CC-BY-4.0", "skills/project-prd", "skills/business-context-map", "skills/workflow-or-agent", "not a blanket MIT licence", "shared/RECORDS.md"] + [f"skills/{s}" for s in sorted(SALES_SKILLS)]:
             self.assertIn(phrase, licence)
         for phrase in ["Permission is hereby granted", 'THE SOFTWARE IS PROVIDED "AS IS"', "Pedro Borrero"]:
             self.assertIn(phrase, licence)
@@ -251,7 +302,10 @@ class RepositoryTests(unittest.TestCase):
             targets = re.findall(r"\[[^\]\n]+\]\(([^\s)]+)\)", text)
             # A code-formatted external link label names an upstream path, not a local file.
             prose = re.sub(r"\[[^\]\n]+\]\(([^\s)]+)\)", "", text)
-            targets += re.findall(r"`([\w./-]+\.md)`", prose)
+            # Files the sales skills create in the user's own workspace, and the repo-root
+            # name of the shared records file, are named in backticks but are not links.
+            targets += [t for t in re.findall(r"`([\w./-]+\.md)`", prose)
+                        if not (t.startswith("business/") or t in {"outcomes.md", "suppression.md", "shared/RECORDS.md"})]
             for target in targets:
                 with self.subTest(page=page.relative_to(ROOT), target=target):
                     self.assert_local_reference(page, target)
@@ -269,7 +323,11 @@ class RepositoryTests(unittest.TestCase):
             "skills/project-prd/SKILL.md", "skills/project-prd/PRD-TEMPLATE.md",
             "skills/project-prd/THIRD-PARTY-NOTICES.md", "skills/project-prd/SOURCE-REUSE.md",
             "skills/business-context-map/SKILL.md", "skills/workflow-or-agent/SKILL.md",
+            ".gitattributes", "shared/RECORDS.md",
         }
+        for skill, extra in SALES_RESOURCES.items():
+            for name in {"SKILL.md", "RECORDS.md", "evals/evals.json"} | extra:
+                expected.add(f"skills/{skill}/{name}")
         files = {p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*") if p.is_file() and ".git" not in p.relative_to(ROOT).parts}
         self.assertEqual(files, expected)
         for path in files:
@@ -279,7 +337,10 @@ class RepositoryTests(unittest.TestCase):
             self.assertNotIn(b"\0", p.read_bytes(), path)
             p.read_text(encoding="utf-8")
             if path.startswith("skills/"):
-                self.assertEqual(p.suffix, ".md")
+                if "/evals/" in path:
+                    self.assertEqual(p.name, "evals.json", path)
+                else:
+                    self.assertEqual(p.suffix, ".md", path)
         for p in ROOT.rglob("*"):
             if ".git" not in p.relative_to(ROOT).parts:
                 self.assertFalse(p.is_symlink(), str(p))
@@ -305,10 +366,55 @@ class RepositoryTests(unittest.TestCase):
     def test_test_script_syntax(self):
         ast.parse((ROOT / "tests/test_repository.py").read_text())
 
-    def test_exactly_three_canonical_skills(self):
+    def test_exactly_the_canonical_skills(self):
         found = {p.parent.name for p in ROOT.glob("skills/*/SKILL.md")}
         self.assertEqual(found, SKILLS)
-        self.assertEqual(len(list(ROOT.rglob("SKILL.md"))), 3)
+        self.assertEqual(len(list(ROOT.rglob("SKILL.md"))), len(SKILLS))
+
+    def test_sales_skills_carry_identical_records(self):
+        canonical = (ROOT / "shared/RECORDS.md").read_bytes()
+        for skill in sorted(SALES_SKILLS):
+            with self.subTest(skill=skill):
+                self.assertEqual((ROOT / "skills" / skill / "RECORDS.md").read_bytes(), canonical,
+                                 "Copy shared/RECORDS.md into the skill unchanged")
+
+    def test_sales_skill_shape(self):
+        for skill in sorted(SALES_SKILLS):
+            with self.subTest(skill=skill):
+                text = (ROOT / "skills" / skill / "SKILL.md").read_text()
+                data = frontmatter(text)
+                self.assertEqual(data["license"], "MIT")
+                self.assertLess(len(text.splitlines()), 500)
+                for heading in ("## Never", "## About this skill"):
+                    self.assertIn(heading, text)
+                self.assertRegex(text, r"(?:\(|then )Approve\b", "Every sales skill names an approval step")
+                self.assertIn("[RECORDS.md](RECORDS.md)", text)
+                for target in re.findall(r"\[[^\]\n]+\]\(([^\s)]+)\)", text):
+                    if not target.startswith("http"):
+                        self.assertNotIn("/", target, f"{skill} links outside its own folder: {target}")
+
+    def test_sales_evals(self):
+        for skill in sorted(SALES_SKILLS):
+            with self.subTest(skill=skill):
+                data = json.loads((ROOT / "skills" / skill / "evals/evals.json").read_text())
+                self.assertEqual(data["skill_name"], skill)
+                self.assertGreaterEqual(len(data["evals"]), 5)
+                for case in data["evals"]:
+                    self.assertTrue(case["prompt"] and case["expected_output"] and case["expectations"])
+                triggers = data["trigger_queries"]
+                self.assertEqual(len(triggers), 20)
+                self.assertEqual(sum(q["should_trigger"] for q in triggers), 10)
+
+    def test_no_private_names_or_long_dashes(self):
+        self.assertEqual(private_name_hits("A note about Muntons and Insight Energy"), {"muntons", "insight energy"})
+        for p in ROOT.rglob("*"):
+            if not p.is_file() or ".git" in p.relative_to(ROOT).parts or p.name == "test_repository.py":
+                continue
+            text = p.read_text()
+            with self.subTest(file=p.relative_to(ROOT).as_posix()):
+                self.assertEqual(private_name_hits(text), set())
+                if p.relative_to(ROOT).parts[0] == "shared" or p.parent.name in SALES_SKILLS or "evals" in p.parts:
+                    self.assertNotIn("\u2014", text)
 
 
 if __name__ == "__main__":

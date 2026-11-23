@@ -1,0 +1,163 @@
+{
+  "skill_name": "pipeline",
+  "note": "Synthetic cases. Firms and people are invented. Each assumes a profile with the default chase sequence after discovery (chaser after 2 working days, a call, a chaser 3 working days later, a call, a final email; let go after 3 chasers) and 3 client days a week.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Pipeline review. Open items:\n- Harbour Freight, proposal sent 4 working days ago, no reply, 0 chasers, next step: none.\n- Ashby Builders, discovery call booked for Thursday.\n- Wren Logistics, discovery, information sent 15 working days ago, 3 chasers and 2 calls, no response.",
+      "expected_output": "Drafts the first chaser for Harbour Freight, leaves Ashby with its call as next step, and for Wren Logistics drafts the final email and proposes closing it as lost with reason no-response and a 90-day suppression. Every open item ends with one next step and a date.",
+      "expectations": [
+        "Flags Harbour Freight as missing a next step",
+        "Drafts a short chaser for Harbour Freight for approval",
+        "Treats Wren Logistics as at the chaser limit",
+        "Drafts a final email for Wren Logistics and proposes closing it as lost with reason no-response",
+        "Suggests 90-day suppression for Wren Logistics",
+        "Gives every open item one next step and one date",
+        "Sends and closes nothing without the user's yes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Mark the Kestrel deal as lost.",
+      "expected_output": "Asks for the reason before closing and records it in outcomes.",
+      "expectations": [
+        "Asks why the deal was lost",
+        "Does not close it without a reason",
+        "Will append the outcome line once the reason is given"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can I take on more work in March? Signed and not yet delivered: 9 days in March. Proposals out: Heron (6 days, March start, I think it's likely) and Plover (8 days, March start, 50/50). I work 3 client days a week.",
+      "expected_output": "Compares committed plus likely days against roughly 12 to 13 available days in March, says March is over capacity, and suggests a later start or phase for new proposals.",
+      "expectations": [
+        "Works out available client days in March from 3 days a week",
+        "Uses the user's own likelihood rather than inventing probabilities",
+        "Says March is over capacity",
+        "Suggests a later start or a phase for new work"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I've also got a separate spreadsheet of deals I'm tracking. Just look at that for the review instead of the records.",
+      "expected_output": "Recommends bringing the spreadsheet's facts into the records rather than keeping two lists, and offers to do it.",
+      "expectations": [
+        "Recommends one store rather than two lists",
+        "Offers to bring the spreadsheet facts into the records",
+        "Does not silently work from the spreadsheet alone"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We won the Ashby Builders project and they're thrilled with the first phase. Update the pipeline.",
+      "expected_output": "Records the win in outcomes, adds Ashby to suppression as a client, and notes a referral and case-study permission ask at the right moment.",
+      "expectations": [
+        "Appends a won outcome",
+        "Marks Ashby as a client so prospecting skips it",
+        "Suggests asking for a referral and case-study permission"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Our CRM is the record store and its deal stages are Qualify, Proposal Out, Closed Won and Closed Lost. Can you also keep a running list of my deals in a file here so we don't depend on the CRM?",
+      "expected_output": "Declines to keep a second pipeline, explains the CRM is the record, and works through the CRM's own stages via the profile's mapping.",
+      "expectations": [
+        "Does not create a parallel deal list in files",
+        "Uses the CRM's own stage names rather than renaming them",
+        "Maps the CRM stages to discovery, proposal, won and lost"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "I've sent Heron a proposal for 6 days of work starting in March. Can you book those days in so my March capacity is right?",
+      "expected_output": "Says an unaccepted proposal is not a booking: counts Heron as likely, weighted by the user's own view, not as committed.",
+      "expectations": [
+        "Does not count Heron's days as committed",
+        "Asks for or uses the user's own view of how likely Heron is",
+        "Shows March with committed and likely kept separate"
+      ]
+    }
+  ],
+  "trigger_queries": [
+    {
+      "query": "review my pipeline",
+      "should_trigger": true
+    },
+    {
+      "query": "which deals should I chase this week",
+      "should_trigger": true
+    },
+    {
+      "query": "we lost the Harbour deal, record it",
+      "should_trigger": true
+    },
+    {
+      "query": "can I take on another project in March",
+      "should_trigger": true
+    },
+    {
+      "query": "what's waiting on me in sales right now",
+      "should_trigger": true
+    },
+    {
+      "query": "close out the deals that have gone cold",
+      "should_trigger": true
+    },
+    {
+      "query": "we won the contract, update everything",
+      "should_trigger": true
+    },
+    {
+      "query": "weekly sales review",
+      "should_trigger": true
+    },
+    {
+      "query": "how much work is likely to come in next quarter",
+      "should_trigger": true
+    },
+    {
+      "query": "draft a follow up for the proposal they haven't answered",
+      "should_trigger": true
+    },
+    {
+      "query": "a new lead emailed us, what should I say",
+      "should_trigger": false
+    },
+    {
+      "query": "find prospects in Manchester",
+      "should_trigger": false
+    },
+    {
+      "query": "write the statement of work",
+      "should_trigger": false
+    },
+    {
+      "query": "set up my business profile",
+      "should_trigger": false
+    },
+    {
+      "query": "fix my CI pipeline, the tests are failing",
+      "should_trigger": false
+    },
+    {
+      "query": "build a data pipeline from Postgres to BigQuery",
+      "should_trigger": false
+    },
+    {
+      "query": "review my project plan for the client build",
+      "should_trigger": false
+    },
+    {
+      "query": "chase the unpaid invoice",
+      "should_trigger": false
+    },
+    {
+      "query": "forecast my personal budget for next year",
+      "should_trigger": false
+    },
+    {
+      "query": "summarise yesterday's client meeting",
+      "should_trigger": false
+    }
+  ]
+}
