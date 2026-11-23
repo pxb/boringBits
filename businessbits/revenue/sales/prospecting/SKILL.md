@@ -1,6 +1,6 @@
 ---
 name: prospecting
-description: Finds and researches companies worth contacting for a small UK consultancy or agency, then drafts a short outreach sequence for the user to send. Starts from the clients the business already wins, checks every contact two ways, applies UK contact rules and suppression, and sends nothing itself. Use when the user asks for new leads, a prospect list, a weekly research pack, outreach to a named company, more pipeline, or to find and check the right person and email address to contact at a firm.
+description: Finds and researches companies worth contacting for a small UK consultancy or agency, then drafts a short outreach sequence for the user to send. Starts from the clients the business already wins, checks every contact two ways, applies UK contact rules and suppression, and sends nothing itself. Use when the user asks for new leads, research on a company before contacting it, whether UK rules allow cold emailing someone, a prospect list, a weekly research pack, outreach to a named company, more pipeline, or to find and check the right person and email address to contact at a firm.
 license: MIT
 compatibility: Works best with web search and browsing. Recording needs persistent files or a connected store set up by business-setup. Paid research tools are optional.
 metadata:

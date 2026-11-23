@@ -1,6 +1,6 @@
 ---
 name: business-setup
-description: Sets up the BusinessBits skills for one small UK business. Works out what this assistant can do, picks where sales records live, writes the business profile (offer, prices, buyers, proof, voice, capacity, research tools) and checks the basic UK registrations. Use the first time someone uses the enquiry, prospecting, proposal or pipeline skills, when there is no business profile yet, when they ask to set up, change or review their business details, or when they want drafts to sound like them (learning how they write from their sent emails).
+description: Sets up the BusinessBits skills for one small UK business. Works out what this assistant can do, picks where sales records live, writes the business profile (offer, prices, buyers, proof, voice, capacity, research tools) and checks the basic UK registrations. Use the first time someone uses the enquiry, prospecting, proposal or pipeline skills, when there is no business profile yet, when they ask to set up, change or review their business details, when they are getting started with BusinessBits or BoringBits, when records move to a new CRM or store, when choosing research tools, or when they want drafts to sound like them (learning how they write from their sent emails).
 license: MIT
 compatibility: Any assistant that can read these files. Saving the profile needs either persistent files or a connected store such as a CRM, database or spreadsheet.
 metadata:

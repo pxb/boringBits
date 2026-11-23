@@ -1,6 +1,6 @@
 ---
 name: enquiry
-description: Handles an inbound sales enquiry for a small consultancy or agency. Checks whether it is a fit, records it once, drafts a reply for approval and sets one next step with a date. Use when a message, form submission, referral or introduction arrives from a possible client, or when the user asks what to do about an enquiry or how to reply to one.
+description: Handles an inbound sales enquiry for a small consultancy or agency. Checks whether it is a fit, records it once, drafts a reply for approval and sets one next step with a date. Use when a message, form submission, referral or introduction arrives from a possible client, or when the user asks what to do about an enquiry or how to reply to one, including a possible client asking what something costs.
 license: MIT
 compatibility: Any assistant that can read these files. Recording needs persistent files or a connected store set up by business-setup.
 metadata:
