@@ -69,18 +69,32 @@ All five run 2 misses name something that wasn't attached: "draft a reply to thi
 
 #### Evals with and without the skill
 
-Hermes, default profile model, synthetic profile, two cases per skill, each run with and without the skills, one blind grader.
+Hermes, default profile model, synthetic profile, two cases per skill, each run with and without the skills, at commit `82e5124`. The same outputs were graded blind twice: once by the Hermes model that ran them, once by Claude Sonnet.
 
-| Skill | With | Without |
+| Skill | With, Hermes grader | Without, Hermes grader | With, Claude grader | Without, Claude grader |
+| --- | --- | --- | --- | --- |
+| business-setup | 8/8 | 7/8 | 6/8 | 7/8 |
+| enquiry | 10/10 | 5/10 | 10/10 | 5/10 |
+| pipeline | 9/10 | 6/10 | 10/10 | 4/10 |
+| proposal | 7/7 | 6/7 | 7/7 | 6/7 |
+| prospecting | 6/6 | 4/6 | 5/6 | 4/6 |
+| **All** | **40/41** | **28/41** | **38/41** | **26/41** |
+
+The two graders agreed on 74 of the 82 marks. Four skills beat their baseline under both. Without the skills, the failures sat in the skills' own ground: quoting a price on an enquiry before checking fit, dropping the closing message and the suppression list, and planning outreach to a company whose parent is already a client. With the skills, the Hermes grader failed a pipeline deal with no next step that got a new step instead of being flagged as a gap first; the Claude grader failed a prospecting answer that dropped a contact who had left the company without proposing a current person to find instead.
+
+business-setup didn't beat its baseline under the Claude grader, for two reasons. With the skill, the output listed what the assistant could do without recommending a store, and asked its questions without a default on each. And the case 1 baseline wasn't a baseline: the session without the skill found and read the installed skill files, so it was testing the skill too. Both gaps were fixed at `a58bd8a` and the cases rerun.
+
+##### business-setup rerun at `a58bd8a`
+
+Hermes, same model, both cases with and without the skill, one blind grader (the same model). This time the baseline was sealed: every copy of the skills on the host was made unreadable to the session without them, and a probe session told to list those paths found nothing.
+
+| Case | With | Without |
 | --- | --- | --- |
-| business-setup | 8/8 | 7/8 |
-| enquiry | 10/10 | 5/10 |
-| pipeline | 9/10 | 6/10 |
-| proposal | 7/7 | 6/7 |
-| prospecting | 6/6 | 4/6 |
-| **All** | **40/41** | **28/41** |
+| 1, a new business asks to be set up | 5/5 | 2/5 |
+| 2, a day rate update | 3/3 | 3/3 |
+| **All** | **8/8** | **5/8** |
 
-Every skill beat its baseline. Without the skills, the failures sat in the skills' own ground: quoting a price on an enquiry before checking fit, dropping the closing message and the suppression list, and planning outreach to a company whose parent is already a client. The one failure with the skills: in a pipeline review, a deal with no next step got a new step instead of being flagged as a gap first.
+Both expectations the fix targeted moved from fail to pass. With the skill: "Records: files in `business/`, because files persist here and nothing else is connected", and every question carried its default. Without it, the session built a generic folder of notes instead of choosing a store, and asked its questions with no defaults. Case 2 is a profile edit the baseline also does, so it doesn't separate the two. The rerun took seven sessions.
 
 #### Install checks
 
@@ -90,7 +104,7 @@ Every skill beat its baseline. Without the skills, the failures sat in the skill
 #### Caveats
 
 - The samples are small: 30 trigger queries and ten eval cases on Hermes, 41 expectations in all.
-- On Hermes the same model ran the cases and graded them. A grader from another model family is still owed.
+- The business-setup rerun was graded by the same model that ran it, not by a second model family.
 - The Claude Code descriptions were widened against the same 100 queries they were scored on.
 - The 15-query sample ran with the tester's own skills also loaded. The full runs excluded them.
-- Evals with and without the skill have run on one host only.
+- Evals with and without the skill have run on one host only. Only the business-setup rerun had a sealed baseline; the first run's baselines for the other four skills weren't checked for reading the installed skills.
