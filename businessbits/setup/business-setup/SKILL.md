@@ -6,7 +6,7 @@ compatibility: Any assistant that can read these files. Saving the profile needs
 metadata:
   author: Pedro Borrero, borre.ro
   support: none
-  version: "0.2"
+  version: "0.3"
   status: draft
 ---
 
@@ -18,7 +18,7 @@ Steps are labelled: **Fetch** reads a fact exactly, **Judge** needs weighing, **
 
 ## 1. Look for an existing profile (Fetch)
 
-Look for `business/profile.md` in the working folder, or a profile record in the user's connected store. If one exists, this is an update: show it, ask what changed, and edit only those parts. Never overwrite a profile wholesale.
+Look for `business/profile.md` in the working folder, or the profile in the user's connected store. A store may hold it as one record or as separate facts, for example a knowledge base that returns facts by kind; read those facts and lay them out under the template's sections. If a profile exists, this is an update: show it, ask what changed, and edit only those parts. Never overwrite a profile wholesale.
 
 ## 2. Find out what this assistant can do (Fetch, then Check)
 
@@ -35,7 +35,9 @@ Tell the user in two or three lines what you found. If something is unclear, ask
 
 ## 3. Choose where records live (Judge, then Approve)
 
-Read [RECORDS.md](references/RECORDS.md). Recommend one store:
+If the existing profile already names where records live, say so in one line and ask whether it still holds; skip the recommendation unless it has changed.
+
+Otherwise read [RECORDS.md](references/RECORDS.md). Recommend one store:
 
 - **Files** when files persist and the user has no sales records elsewhere. This is the default.
 - **Their existing CRM, database or spreadsheet** when they already keep sales records there, or when files don't persist. Map each record and field in RECORDS.md to their tables and fields, including their own deal stages to discovery, proposal, won and lost, and write the mapping into the profile. Fields with no home stay in the notes of the nearest record. Work with the CRM as it is set up; don't ask the user to change it to suit the skills.
@@ -98,7 +100,7 @@ If an item is missing or unknown, say so plainly in one line and move on. Don't 
 
 ## 8. Save and confirm (Approve, then Record)
 
-Show the finished profile. Save it only after the user says yes: to `business/profile.md` with files, or as a profile record in their store. Create the empty `business/records/` folders from RECORDS.md when using files.
+Show the finished profile, or for an update only the facts that change. Save it only after the user says yes: to `business/profile.md` with files, or to their store. Some stores only take proposals that a person approves later; then propose each changed fact, give the user the proposal ids, and say nothing changes until they approve. Create the empty `business/records/` folders from RECORDS.md when using files.
 
 Then tell the user what they can ask for now:
 
@@ -113,7 +115,8 @@ Then tell the user what they can ask for now:
 - No guessed values. Gaps say `unknown`.
 - The user was told which store you recommend, in one line with a reason.
 - Every question asked had its default beside it.
-- The record store is reachable, and a test record can be written and read back. Remove the test record afterwards.
+- The profile store is reachable and the save worked: the file or record reads back, or, in a store that takes proposals, each proposal returned an id. Don't write a test record into a store that only takes proposals.
+- The record store is reachable for reading. If agents can't write to it yet, say so in one line as a known gap and carry on.
 - Nothing was sent, bought or connected.
 
 ## Output
@@ -133,7 +136,9 @@ The owner explaining their offer, prices, buyers and rules again in every conver
 | Files don't persist and no store is connected | Say so. Give the user the finished profile to keep and paste in next time |
 | The user can't answer a question | Write `unknown` and move on |
 | A profile already exists | Update the parts that changed, never the whole profile |
-| The store can't be written to or read back | Stop before saving and say what failed |
+| The profile store can't be written to or read back | Stop before saving and say what failed |
+| The store takes proposals, not writes | Propose the changes, give the ids, and tell the user to approve them; the profile changes only then |
+| Records can be read but not written by the assistant | Record it as a known gap, keep no second pipeline, and carry on |
 
 ## Never
 
