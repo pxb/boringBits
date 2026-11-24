@@ -34,6 +34,6 @@ In Hermes, install one skill by its path in this repo:
 hermes skills install pxb/boringBits/businessbits/revenue/sales/enquiry
 ```
 
-Install Business setup the same way (`pxb/boringBits/businessbits/setup/business-setup`), and run it first. See the [compatibility notes](../docs/compatibility.md) for what has and hasn't been tested.
+Install Business setup the same way (`pxb/boringBits/businessbits/setup/business-setup`), and run it first. See [testing](../docs/testing.md) for how the skills are tested and the results so far, and the [compatibility notes](../docs/compatibility.md) for host boundaries.
 
 Every skill states what it produces and where it goes, the step it takes off your plate, and what it never does without your yes.

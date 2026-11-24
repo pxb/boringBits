@@ -343,7 +343,7 @@ class RepositoryTests(unittest.TestCase):
     def test_public_file_allowlist_and_text_only_skills(self):
         expected = {
             ".gitignore", "README.md", "AGENTS.md", "CLAUDE.md", "LICENSE",
-            "THIRD-PARTY-NOTICES.md", "CONTRIBUTING.md", "docs/compatibility.md",
+            "THIRD-PARTY-NOTICES.md", "CONTRIBUTING.md", "docs/compatibility.md", "docs/testing.md",
             "requirements-test.txt", "tests/test_repository.py",
             "skills/project-prd/SKILL.md", "skills/project-prd/PRD-TEMPLATE.md",
             "skills/project-prd/THIRD-PARTY-NOTICES.md", "skills/project-prd/SOURCE-REUSE.md",

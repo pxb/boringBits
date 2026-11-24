@@ -5,7 +5,7 @@
 | Mode | What it means | Current evidence |
 | --- | --- | --- |
 | Explicit read/apply | Give an assistant repository/file access, ask it to read a selected skill and its resources, then use those instructions for your task | Portable Markdown and local structural validation only; no claim that every model follows every instruction reliably |
-| Host-native discovery/install | A host discovers installed skills, exposes them for selection and invokes them according to its own contract | Not implemented or tested in this repository |
+| Host-native discovery/install | A host discovers installed skills, exposes them for selection and invokes them according to its own contract | Tested for the BusinessBits skills in Claude Code and Hermes; see [testing](testing.md). Not tested for the toolkit skills |
 
 The canonical skill folders follow the [Agent Skills specification](https://agentskills.io/specification): YAML frontmatter with `name` and `description`, Markdown instructions and optional resources. [AGENTS.md](https://agents.md/) is a separate open convention for repository navigation and contribution guidance, not a plugin manifest. A plain CLAUDE.md pointer is intended to direct readers to the shared guidance, not invoke undocumented import syntax.
 
@@ -27,4 +27,4 @@ The local test suite checks skill count, YAML parsing and selected Agent Skills 
 
 The link check supports the simple inline links and backtick file references used here. It is not a full Markdown parser, link availability checker or exhaustive secret detector. It deliberately does not fetch article URLs. Human review remains required before publication.
 
-No CI run, native installation, live agent session or runtime-host compatibility pilot is established by these local checks. No skill was installed or registered as part of preparing this repository.
+These local checks don't establish native installation or live agent behaviour. CI runs them on Linux and Windows. Live sessions, installs and evals for the BusinessBits skills are recorded in [testing](testing.md), with the standard every skill is tested to.
