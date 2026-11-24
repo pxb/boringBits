@@ -24,4 +24,6 @@ No parser fallback exists; a missing PyYAML dependency is an error. `-B` avoids 
 
 Add a failing regression test before fixing behaviour. Confirm the failure is for the intended reason, then make the smallest change and rerun the full suite. If adding a public file or changing an intentionally pinned PRD resource, review the allowlist/fingerprint change explicitly rather than weakening the gate to make it pass.
 
+A new or changed skill also follows the [testing standard](docs/testing.md): evals and trigger queries in its folder, a sample run before the full set, and dated results with their caveats.
+
 Before publication, inspect the full Git tree, staged diff and history for unexpected files and sensitive content. Passing pattern checks is not proof that arbitrary text is safe to publish. Native integration claims need their own real host test and current official contract, not only frontmatter checks.
