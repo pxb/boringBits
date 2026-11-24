@@ -6,7 +6,7 @@ compatibility: Any assistant that can read these files. Saving the profile needs
 metadata:
   author: Pedro Borrero, borre.ro
   support: none
-  version: "0.1"
+  version: "0.2"
   status: draft
 ---
 
@@ -40,13 +40,13 @@ Read [RECORDS.md](references/RECORDS.md). Recommend one store:
 - **Files** when files persist and the user has no sales records elsewhere. This is the default.
 - **Their existing CRM, database or spreadsheet** when they already keep sales records there, or when files don't persist. Map each record and field in RECORDS.md to their tables and fields, including their own deal stages to discovery, proposal, won and lost, and write the mapping into the profile. Fields with no home stay in the notes of the nearest record. Work with the CRM as it is set up; don't ask the user to change it to suit the skills.
 
-Say why in one line. The user decides. Never move existing records without their yes.
+Write the recommendation as its own line, naming the store and one reason, for example: "Records: files in `business/`, because files persist here and nothing else is connected." Listing what the assistant can do is not a recommendation; the line is required even when the answer seems obvious. The user decides. Never move existing records without their yes.
 
 ## 4. Build the profile from what already exists (Fetch, then Judge)
 
 Copy [PROFILE-TEMPLATE.md](templates/PROFILE-TEMPLATE.md). Fill it from material the user already has before asking anything: their website, a recent proposal, a price list, their LinkedIn profile, past invoices. Quote the source next to each fact.
 
-Then ask only for what is still missing, in short batches of three or four questions. Give each question a default the user can accept with one word. Good defaults:
+Then ask only for what is still missing, in short batches of three or four questions. Every question carries its own default, written on the same line, so the user can accept it with one word: "Days a week on client work? (default: 3)". Where there is no sensible default, such as the trading name or what they sell, the default is what you found in their material, or `unknown`. A list of defaults kept apart from the questions doesn't count. Good defaults:
 
 | Question | Default |
 |---|---|
@@ -111,6 +111,8 @@ Then tell the user what they can ask for now:
 
 - Every fact in the profile has a source or says "the user said".
 - No guessed values. Gaps say `unknown`.
+- The user was told which store you recommend, in one line with a reason.
+- Every question asked had its default beside it.
 - The record store is reachable, and a test record can be written and read back. Remove the test record afterwards.
 - Nothing was sent, bought or connected.
 
