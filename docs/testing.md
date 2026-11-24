@@ -29,6 +29,8 @@ A trigger check asks whether the description alone makes the host pick the right
 An eval run asks whether the skill changes the result.
 
 - Run each case twice on the same model: once with the skill available and once without it.
+- The baseline must not be able to read the skill files at all, not only lack them as installed skills. Check the without outputs for any sign they found the skill anyway, and drop or rerun those cases.
+- Keep every run's full output and the files it wrote, so the runs can be graded again by someone else.
 - Where a case needs a business profile, use a synthetic one built from the profile template and labelled synthetic.
 - Grade blind. The grader sees both outputs in random order, isn't told which run had the skill, and marks each expectation pass or fail with a one-line quote from the output.
 - Grade with a different model family from the one that ran the cases where possible. If the same model ran and graded, say so.
@@ -69,18 +71,20 @@ All five run 2 misses name something that wasn't attached: "draft a reply to thi
 
 #### Evals with and without the skill
 
-Hermes, default profile model, synthetic profile, two cases per skill, each run with and without the skills, one blind grader.
+Hermes ran the cases on its default profile model, with a synthetic profile: two cases per skill, each run with and without the skills. The same 20 outputs were graded twice, blind, each grader with its own shuffle: once by Hermes on the same model, and once by Claude Sonnet in a single session with no tools.
 
-| Skill | With | Without |
-| --- | --- | --- |
-| business-setup | 8/8 | 7/8 |
-| enquiry | 10/10 | 5/10 |
-| pipeline | 9/10 | 6/10 |
-| proposal | 7/7 | 6/7 |
-| prospecting | 6/6 | 4/6 |
-| **All** | **40/41** | **28/41** |
+| Skill | With (Hermes grader) | Without (Hermes grader) | With (Claude grader) | Without (Claude grader) |
+| --- | --- | --- | --- | --- |
+| business-setup | 8/8 | 7/8 | 6/8 | 7/8 |
+| enquiry | 10/10 | 5/10 | 10/10 | 5/10 |
+| pipeline | 9/10 | 6/10 | 10/10 | 4/10 |
+| proposal | 7/7 | 6/7 | 7/7 | 6/7 |
+| prospecting | 6/6 | 4/6 | 5/6 | 4/6 |
+| **All** | **40/41** | **28/41** | **38/41** | **26/41** |
 
-Every skill beat its baseline. Without the skills, the failures sat in the skills' own ground: quoting a price on an enquiry before checking fit, dropping the closing message and the suppression list, and planning outreach to a company whose parent is already a client. The one failure with the skills: in a pipeline review, a deal with no next step got a new step instead of being flagged as a gap first.
+The two graders agreed on 74 of 82 verdicts. Both put the skills 12 expectations ahead of the baseline.
+
+Four skills beat their baseline under both graders. Business-setup didn't under the Claude grader, for two reasons. Its run with the skill listed what the assistant could do but never said which record store it recommended, and it asked its four questions without a default for each. Both are fair fails, and the skill needs fixing for them. And its baseline run wasn't a clean baseline: it found the skill files on disk and worked from them, so that case doesn't count as a comparison. Without the skills, the failures sat in the skills' own ground: quoting a price on an enquiry before checking fit, dropping the closing message and the suppression list, and planning outreach to a company whose parent is already a client. Under the Hermes grader, the one failure with the skills was a pipeline review giving a deal with no next step a new step instead of flagging the gap first. The Claude grader passed that one and failed a prospecting case for not proposing how to find a named person at the firm.
 
 #### Install checks
 
@@ -90,7 +94,8 @@ Every skill beat its baseline. Without the skills, the failures sat in the skill
 #### Caveats
 
 - The samples are small: 30 trigger queries and ten eval cases on Hermes, 41 expectations in all.
-- On Hermes the same model ran the cases and graded them. A grader from another model family is still owed.
+- The cases ran on one model. The second grader was from another model family, but ran once, in one session.
+- One baseline run (business-setup case 1) read the skill files from disk, so it isn't a real baseline. The other nine baseline outputs show no sign of the skill files.
 - The Claude Code descriptions were widened against the same 100 queries they were scored on.
 - The 15-query sample ran with the tester's own skills also loaded. The full runs excluded them.
 - Evals with and without the skill have run on one host only.
